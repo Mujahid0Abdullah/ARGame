@@ -25,7 +25,7 @@
 ## 📌 **Proje Hakkında** 
 **NumARise ( Numbers in Augmented Reality Technology (AR) )**, 5-12 yaş arası çocuklara matematik öğretmeyi hedefleyen, artırılmış gerçeklik (AR) teknolojisini kullanan yenilikçi bir mobil uygulamadır. NumARt, çocuklara eğlenceli ve etkileşimli bir öğrenme deneyimi sunarken matematik becerilerini geliştirir.
 
-- **NumARise İsmi**: " Numbers " ( sayılar ) ve " Art " ( sanat ) kelimelerinin birleşiminden oluşur. Buradaki " ARt " kısmı, hem artırılmış gerçeklik teknolojisini ( Augmented Reality Technology ) ifade eder, hem de sanat ( Art ) anlamına gelir. Bu isim, matematiksel kavramların artırılmış gerçeklik ile sanatsal bir biçimde birleşmesini simgeler.
+- **NumARise İsmi**: "NumARise" ismi "Numbers" ve "Rise" kelimelerinin birleşiminden oluşuyor. Amaç, uygulamanın çocukların matematik becerilerini eğlenceli ve teşvik edici bir şekilde geliştirmelerine ve ilerletmelerine yardımcı olduğunu iletmektir. Çocukların hesaplama anlayışlarının geliştirilmesi ve matematiksel becerilerinin ilerletilmesi önerilmektedir.
 <br/> 
 
 ## 🗓 **Proje Süreci**  
