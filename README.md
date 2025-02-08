@@ -31,7 +31,7 @@
 ## 🗓 **Proje Süreci**  
 ### 1. **Hafta** 
 - ✅ **Proje İsmi Oluşturuldu :** NumARise
-- ✅ **Github Repo Oluşturuldu :** [GitHub Linki](https://github.com/achelmasoudi/NumARt)
+- ✅ **Github Repo Oluşturuldu :** [GitHub Linki](https://github.com/MuhammadAl32/num-proje)
 - ✅ **Trello Pano Oluşturuldu :** [Trello Linki](https://trello.com/b/FH85iuon/numart)
 
 ### 2. **Hafta** 
