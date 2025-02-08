@@ -2,7 +2,7 @@
       <h1> 
             <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/back-ro.png" width="165px">
             <br/>
-            NumARt
+            NumARise
             <br/> 
       </h1>
 </div>
