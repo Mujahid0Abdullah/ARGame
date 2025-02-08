@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".hardLevelMVC.HardLevelActivity">
+
+    <RelativeLayout
+        android:id="@+id/hardLvlActivity_toolbar_relativeLayoutId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/hardLvlActivity_toolBarId"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/primaryColor"
+            app:layout_scrollFlags="scroll|snap|enterAlways"
+            app:popupTheme="@style/Theme.MaterialComponents.Light"
+            app:title="@string/hard_level"
+            app:titleTextAppearance="@style/styleOfToolbar"
+            app:titleTextColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/hardLvlActivity_toolbar_relativeLayoutId"
+        android:id="@+id/hardLvlActivity_hardLevel_relativelayoutId"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="125dp">
+
+        <RelativeLayout
+            android:id="@+id/hardActivity_hardLevelId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/background_levels"
+            android:backgroundTint="#FF7043">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/teko_semibold"
+                android:text="@string/hard_level"
+                android:textColor="@color/black"
+                android:textSize="40sp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="90dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/hard_level" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hardLvlActivity_recyclerViewId"
+        android:layout_below="@id/hardLvlActivity_hardLevel_relativelayoutId"
+        android:layout_marginTop="25sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

@@ -1,0 +1,49 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.NumARt" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryColor</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Primary brand color. -->
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- for the bar that is above Toolbar -->
+        <item name="android:statusBarColor">@color/primaryColor</item>
+        <!-- for the color of the bar that is below the bottom navigation -->
+        <item name="android:navigationBarColor">@color/primaryColor</item>
+    </style>
+
+    <!--    The Splash Screen Theme -->
+    <style name="TheSplashScreen_Style" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:statusBarColor">@color/primaryColor</item>
+    </style>
+
+
+    <!-- Ripple color when click on a view -->
+    <style name="SelectableItemTheme">
+        <item name="colorControlHighlight">#3E37A000</item>
+    </style>
+    <style name="SelectableItemBackground">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <!-- Bottom Sheet Dialog Style -->
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
+    <!-- Style of Toolbar-->
+    <style name="styleOfToolbar" >
+        <item name="android:textSize">21sp</item>
+        <item name="android:textStyle">bold</item>
+<!--        <item name="android:fontFamily">@font/kollektif</item>-->
+        <item name="singleLine">true</item>
+    </style>
+
+</resources>
