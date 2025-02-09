@@ -102,7 +102,7 @@
 | :-------------: | :-------------:  | :-------------:  | :-------------:  |
 |     Primary Dashboard     |     Premium Access Modal     |     Easy Level Interface     |     Pre-Game Configuration     |
 
-| <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/19.jpeg" width="250"/>| <img src="" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/7.jpeg" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/8.jpeg" width="250"/> |
+| <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/19.jpeg" width="250"/>| <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/20s.jpeg" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/7.jpeg" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/8.jpeg" width="250"/> |
 | :-------------: | :-------------:  | :-------------:  | :-------------:  |
 |     Victory Summary Screen     |     Retry Challenge Interface     |     User Profile Dashboard     |     Language Preferences Modal     |
 
