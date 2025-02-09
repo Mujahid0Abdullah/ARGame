@@ -94,7 +94,7 @@
 
 ### Mobil Uygulama Önizleme 📱
 
-| <img src="https://github.com/user-attachments/assets/95fd0e8f-e3e4-4081-8160-5031d0fd3ea0" width="250"/>| <img src="https://github.com/user-attachments/assets/6495ac6a-0750-499d-9514-dd940d4a0f8d" width="250"/> | <img src="https://github.com/user-attachments/assets/c4a63ed8-2601-4df3-b353-5d33c22fc95f" width="250"/> | <img src="https://github.com/user-attachments/assets/fb2f678e-0b65-4b82-8133-caeaeb8bb836" width="250"/> |
+| <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/1.jpeg" width="250"/>| <img src="https://github.com/user-attachments/assets/6495ac6a-0750-499d-9514-dd940d4a0f8d" width="250"/> | <img src="https://github.com/user-attachments/assets/c4a63ed8-2601-4df3-b353-5d33c22fc95f" width="250"/> | <img src="https://github.com/user-attachments/assets/fb2f678e-0b65-4b82-8133-caeaeb8bb836" width="250"/> |
 | :-------------: | :-------------:  | :-------------:  | :-------------:  |
 |     Launch Screen     |     Sign-In Interface     |     Registration Portal      |     Password Recovery Module     |
 
