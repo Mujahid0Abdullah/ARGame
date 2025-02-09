@@ -48,8 +48,7 @@
 - ✅ **Web Sayfası Oluşturuldu :** [NumARise Web Sitesi](https://achelmasoudi.github.io/NumArt_WebSite/)
 - ✅ **Web Sayfası Oluşturuldu :** [NumARise Web Sitesi](https://achelmasoudi.github.io/NumArt_WebSite/)
 - ✅ **Kullanıcı arayüzleri (frontend) :**
-  - Mobil için : [Pdf Linki](https://github.com/user-attachments/files/18053910/Mobil.pdf)
-  - Tablet için : [Pdf Linki](https://github.com/user-attachments/files/18053912/Tablet.pdf)
+  - Mobil için : [Pdf Linki](https://github.com/MuhammadAl32/num-proje/blob/main/back/dosy.pdf)
 - ✅ **THS Formu Dolduruldu.**
      
 ### 5. **Hafta**  
