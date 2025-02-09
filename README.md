@@ -28,11 +28,19 @@
 - **NumARise İsmi**: "NumARise" ismi "Numbers" ve "Rise" kelimelerinin birleşiminden oluşuyor. Amaç, uygulamanın çocukların matematik becerilerini eğlenceli ve teşvik edici bir şekilde geliştirmelerine ve ilerletmelerine yardımcı olduğunu iletmektir. Çocukların hesaplama anlayışlarının geliştirilmesi ve matematiksel becerilerinin ilerletilmesi önerilmektedir.
 <br/> 
 
+##   *** Proje Indirme ***
+--- RAR olarak indir : ** [indir](https://github.com/MuhammadAl32/num-proje/raw/refs/heads/main/back/app-debug.rar)
+--- Google Drive üzerinden indirin: ** [indir](https://drive.google.com/file/d/1tHJcViwcUBAhUdSV1tuVSVIVLBw_WzSZ/view?usp=sharing)
+
+
+
 ## 🗓 **Proje Süreci**  
 ### 1. **Hafta** 
 - ✅ **Proje İsmi Oluşturuldu :** NumARise
 - ✅ **Github Repo Oluşturuldu :** [GitHub Linki](https://github.com/MuhammadAl32/num-proje)
 - ✅ **Trello Pano Oluşturuldu :** [Trello Linki](https://trello.com/b/FH85iuon/numart)
+
+
 
 ### 2. **Hafta** 
 - ✅ **Renk Paleti Seçildi :** [Coolors Linki](https://coolors.co/palette/37a000-f0f3f8-000000-ffffff)
