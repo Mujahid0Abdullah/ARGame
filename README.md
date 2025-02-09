@@ -98,7 +98,7 @@
 | :-------------: | :-------------:  | :-------------:  | :-------------:  |
 |     Launch Screen     |     Sign-In Interface     |     Registration Portal      |     Password Recovery Module     |
 
-| <img src="https://github.com/user-attachments/assets/6f39f5bd-3887-4ad6-9c0e-84eb0937e098" width="250"/>| <img src="https://github.com/user-attachments/assets/4e8b3a37-f8f6-4735-8bbc-d5d9e9fb9323" width="250"/> | <img src="https://github.com/user-attachments/assets/b26dd8b5-1589-4b2a-ae9e-1006119aeed6" width="250"/> | <img src="https://github.com/user-attachments/assets/06483eb9-ed7f-4a65-857d-8eb2970cd8d4" width="250"/> |
+| <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/5.jpeg" width="250"/>| <img src="https://github.com/user-attachments/assets/4e8b3a37-f8f6-4735-8bbc-d5d9e9fb9323" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/6.jpeg" width="250"/> | <img src="https://github.com/user-attachments/assets/06483eb9-ed7f-4a65-857d-8eb2970cd8d4" width="250"/> |
 | :-------------: | :-------------:  | :-------------:  | :-------------:  |
 |     Primary Dashboard     |     Premium Access Modal     |     Easy Level Interface     |     Pre-Game Configuration     |
 
