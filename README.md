@@ -98,11 +98,11 @@
 | :-------------: | :-------------:  | :-------------:  | :-------------:  |
 |     Launch Screen     |     Sign-In Interface     |     Registration Portal      |     Password Recovery Module     |
 
-| <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/5.jpeg" width="250"/>|  | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/6.jpeg" width="250"/> | <img src="https://github.com/user-attachments/assets/06483eb9-ed7f-4a65-857d-8eb2970cd8d4" width="250"/> |
+| <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/5.jpeg" width="250"/>|  | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/6.jpeg" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/18.jpeg" width="250"/> |
 | :-------------: | :-------------:  | :-------------:  | :-------------:  |
 |     Primary Dashboard     |     Premium Access Modal     |     Easy Level Interface     |     Pre-Game Configuration     |
 
-| <img src="https://github.com/user-attachments/assets/c0a4275d-8ead-4686-b2ac-88f9d9b8e536" width="250"/>| <img src="https://github.com/user-attachments/assets/2d4b9b00-db11-4bc1-850f-f960913b500d" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/7.jpeg" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/8.jpeg" width="250"/> |
+| <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/19.jpeg" width="250"/>| <img src="" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/7.jpeg" width="250"/> | <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/8.jpeg" width="250"/> |
 | :-------------: | :-------------:  | :-------------:  | :-------------:  |
 |     Victory Summary Screen     |     Retry Challenge Interface     |     User Profile Dashboard     |     Language Preferences Modal     |
 
