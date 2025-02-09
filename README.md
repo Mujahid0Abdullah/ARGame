@@ -30,7 +30,7 @@
 
 ##   *** Proje Indirme ***
 --- RAR olarak indir : ** [indir](https://github.com/MuhammadAl32/num-proje/raw/refs/heads/main/back/app-debug.rar)
---- Google Drive üzerinden indirin: ** [indir](https://drive.google.com/file/d/1tHJcViwcUBAhUdSV1tuVSVIVLBw_WzSZ/view?usp=sharing)
+--- Google Drive üzerinden indirin: ** [indir](https://drive.google.com/file/d/11h9DPYfUAG5rKPcLMxqvdtdf9PcBbBs1/view?usp=drive_link)
 
 
 
