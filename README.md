@@ -109,7 +109,7 @@
 <br/> 
 
 ### Demo Önizleme 🎬
-https://github.com/user-attachments/assets/206bf37b-f2dc-4eb2-afff-189db060cb4c
+[https://github.com/user-attachments/assets/206bf37b-f2dc-4eb2-afff-189db060cb4c](https://vimeo.com/1054930615/f71ca688e2?share=copy)
 
 <br/> 
 
