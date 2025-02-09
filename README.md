@@ -18,7 +18,7 @@
 
    <br/> 
 
-![Feature graphic][(https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/101.png)
+![Feature graphic](https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/101.png)
    <br/> 
 
 
