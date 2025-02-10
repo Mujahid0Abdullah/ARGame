@@ -28,7 +28,7 @@
 - **NumARise İsmi**: "NumARise" ismi "Numbers" ve "Rise" kelimelerinin birleşiminden oluşuyor. Amaç, uygulamanın çocukların matematik becerilerini eğlenceli ve teşvik edici bir şekilde geliştirmelerine ve ilerletmelerine yardımcı olduğunu iletmektir. Çocukların hesaplama anlayışlarının geliştirilmesi ve matematiksel becerilerinin ilerletilmesi önerilmektedir.
 <br/> 
 
-##   *** Proje Indirme ***
+##   *** Proje apk dosysı Indirme ***
 --- RAR olarak indir : ** [indir](https://github.com/MuhammadAl32/num-proje/raw/refs/heads/main/back/app-debug.rar)
 --- Google Drive üzerinden indirin: ** [indir](https://drive.google.com/file/d/11h9DPYfUAG5rKPcLMxqvdtdf9PcBbBs1/view?usp=drive_link)
 
