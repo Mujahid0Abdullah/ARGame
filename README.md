@@ -2,14 +2,14 @@
       <h1> 
             <img src="https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/back-ro.png" width="165px">
             <br/>
-            NumARise
+            Math ARound Us
             <br/> 
       </h1>
 </div>
 
 <div align="center">
       <h3> 
-            🌟 MUHAMMAD AL MUHAMMAD - 205541603 🌟
+            🌟 Mujahid Alabdullah - 200541605 🌟
           <br/><br/>
             🔢 SAYI OLUŞTURUCU Konusu İçin Geliştirilen Mobil Uygulama 🔢
             <br/> 
