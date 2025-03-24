@@ -7,6 +7,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var easyLevelBtn : RelativeLayout
     private lateinit var mediumLevelBtn : RelativeLayout
     private lateinit var hardLevelBtn : RelativeLayout
+    private lateinit var openARButton : Button
 
     //Firebase
     private var mAuth: FirebaseAuth? = null
@@ -83,6 +85,13 @@ class MainActivity : AppCompatActivity() {
         if (userId != null) {
             setInitialTargetProgress(userId)  // Kullanıcının ilerlemesini Firebase'e kaydeder
         }
+        openARButton = findViewById(R.id.openARButton)
+        println("hi")
+        openARButton.setOnClickListener {
+            val intent = Intent(this, PuzzleGameActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun getFullNameProcess() {

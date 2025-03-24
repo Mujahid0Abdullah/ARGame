@@ -34,6 +34,8 @@
     <string name="easy_level">Kolay Seviye</string>
     <string name="medium_level">Orta Seviye</string>
     <string name="hard_level">Zor Seviye</string>
+    <string name="ar_sum_game">Toplama Oyunu</string>
+
     <string name="pick_levels">Seviyenizi seçin ve eğlence başlasın!</string>
     <string name="hello_fullname">Merhaba ... 👋</string>
     <string name="main_activity_description">NumARt\'ın büyülü dünyasına hoş geldiniz! 🪄 \nHadi sayılarla oynayalım 🧮 ve birlikte harika şeyler öğrenelim! 📚</string>

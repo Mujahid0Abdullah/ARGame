@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-
     <uses-permission android:name="android.permission.CAMERA"
         tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
     <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
@@ -45,6 +44,13 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
+        <activity android:name=".PuzzleGameActivity"
+            android:exported="false"
+           />
+        <activity android:name=".Main"
+            android:exported="false"
+            />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />

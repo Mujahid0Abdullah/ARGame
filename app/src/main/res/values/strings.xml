@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NumARise</string>
+    <string name="app_name">MathAR</string>
     <string name="create_an_account">Start Your Adventure!</string>
     <string name="full_name">Full name</string>
     <string name="email">Email</string>
@@ -34,6 +34,7 @@
     <string name="easy_level">Easy Level</string>
     <string name="medium_level">Medium Level</string>
     <string name="hard_level">Hard Level</string>
+    <string name="ar_sum_game">Sum Game</string>
     <string name="pick_levels">Pick your level and let the fun begin!</string>
     <string name="hello_fullname">Hello ... 👋</string>
     <string name="main_activity_description">Welcome to the magical world of NumARt! 🪄 \nLet\'s play with numbers 🧮 and learn amazing things together! 📚</string>

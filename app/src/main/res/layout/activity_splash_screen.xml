@@ -25,10 +25,13 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NumARise"
+            android:text="Math
+            ARoundUs"
             android:textColor="#DBD5D5"
             android:textSize="60sp"
-            tools:text="NumARise" />
+            android:textAlignment="center"
+            tools:text="Math
+            ARoundUs" />
 
     </LinearLayout>
 
