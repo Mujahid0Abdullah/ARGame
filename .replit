@@ -1,0 +1,28 @@
+modules = ["web"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Build and Run Android"
+
+[[workflows.workflow]]
+name = "ar game w"
+mode = "sequential"
+author = 40880445
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "ar game w"
+
+[[workflows.workflow]]
+name = "Build and Run Android"
+author = 40880445
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./gradlew assembleDebug"
