@@ -108,11 +108,11 @@
                     </RelativeLayout>
 
                     <ImageView
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/easy_level" />
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/bigenner" />
 
                 </RelativeLayout>
 
@@ -147,11 +147,11 @@
                     </RelativeLayout>
 
                     <ImageView
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/medium_level" />
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/mapkid" />
 
                 </RelativeLayout>
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NumARt</string>
+    <string name="app_name">ARitmatika</string>
     <string name="create_an_account">Macerana Başla!</string>
     <string name="full_name">Ad Soyad</string>
     <string name="email">E-posta</string>
@@ -42,7 +42,6 @@
     <string name="settingsActivity_App_language">Uygulama Dili</string>
     <string name="settingsActivity_Suggestions">Önerilerinizi bize iletin</string>
     <string name="settingsActivity_Developed_by">Geliştiren</string>
-    <string name="settingsActivity_Achraf_EL_MASOUDI">Achraf EL MASOUDI</string>
     <string name="settingsActivity_logout">Çıkış Yap</string>
     <string name="error_occurred">Hedef verileri yüklenemedi.</string>
     <string name="log_out">ÇIKIŞ YAP</string>

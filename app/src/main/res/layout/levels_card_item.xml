@@ -35,7 +35,7 @@
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/star_icon" />
+                    android:src="@drawable/star_icon2" />
 
                 <TextView
                     android:id="@+id/levelsCardItem_targetOfStarId"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MathAR</string>
+    <string name="app_name">ARithmeticA</string>
     <string name="create_an_account">Start Your Adventure!</string>
     <string name="full_name">Full name</string>
     <string name="email">Email</string>
@@ -35,13 +35,13 @@
     <string name="medium_level">Medium Level</string>
     <string name="hard_level">Hard Level</string>
     <string name="ar_sum_game">Sum Game</string>
-    <string name="pick_levels">Pick your level and let the fun begin!</string>
+    <string name="pick_levels">Pick your level and start the fun!</string>
     <string name="hello_fullname">Hello ... 👋</string>
-    <string name="main_activity_description">Welcome to the magical world of NumARt! 🪄 \nLet\'s play with numbers 🧮 and learn amazing things together! 📚</string>
+    <string name="main_activity_description">Welcome to the amazing world of Math AR! 🪄 \n Let\'s learn with numbers 🧮 and shapes 📚 together! </string>
     <string name="settingsActivity_App_language">App language</string>
     <string name="settingsActivity_Suggestions">Give us your suggestions</string>
     <string name="settingsActivity_Developed_by">Developed by</string>
-    <string name="settingsActivity_Achraf_EL_MASOUDI">Achraf EL MASOUDI</string>
+    <string name="settingsActivity_coder" translatable="false">Mujahed Alabdullah</string>
     <string name="settingsActivity_logout">Log out</string>
     <string name="error_occurred">Failed to load target data.</string>
     <string name="log_out">LOG OUT</string>

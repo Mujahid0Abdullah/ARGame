@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryColor"
+    android:background="@color/white"
     tools:context=".SplashScreenActivity">
 
     <LinearLayout
@@ -19,19 +19,19 @@
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginBottom="-20dp"
-            android:src="@drawable/splashscreen_icon" />
+            android:src="@drawable/vrcup" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Math
-            ARoundUs"
-            android:textColor="#DBD5D5"
-            android:textSize="60sp"
+            android:fontFamily="@font/wendy_one"
+            android:text="ARitmetika"
+            android:textColor="#FF5722"
+            android:textSize="63sp"
+            android:maxWidth="1100dp"
             android:textAlignment="center"
-            tools:text="Math
-            ARoundUs" />
+            tools:text="ARitmetika" />
 
     </LinearLayout>
 
