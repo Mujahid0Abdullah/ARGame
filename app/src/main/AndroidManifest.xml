@@ -32,8 +32,14 @@
         <activity
             android:name=".GameActivity"
             android:exported="false" />
+        <activity android:name=".MatchMainActivity"
+            android:exported="false" />
+        <activity android:name=".MatchLvl1Activity"
+            android:exported="false" />
         <activity
             android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity android:name=".MatchGameActivity"
             android:exported="false" />
         <activity
             android:name=".ForgotPasswordActivity"

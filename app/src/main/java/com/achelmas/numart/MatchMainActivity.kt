@@ -27,8 +27,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+class MatchMainActivity : AppCompatActivity() {
 
-class MainActivity : AppCompatActivity() {
+
+
+
 
 
     private lateinit var toolbar: Toolbar
@@ -49,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         // Set language
         LanguageManager.loadLocale(this)
 
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_match_main)
 
         mAuth = FirebaseAuth.getInstance()
         Log.d("TAG", mAuth.toString())
@@ -71,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         // Handle button clicks
         easyLevelBtn.setOnClickListener {
-            var intent = Intent(baseContext , EasyLevelActivity::class.java)
+            var intent = Intent(baseContext , MatchLvl1Activity::class.java)
             startActivity(intent)
         }
         mediumLevelBtn.setOnClickListener {
@@ -87,12 +90,8 @@ class MainActivity : AppCompatActivity() {
         if (userId != null) {
             setInitialTargetProgress(userId)  // Kullanıcının ilerlemesini Firebase'e kaydeder
         }
-        openARButton = findViewById(R.id.openARButton)
         println("hi")
-        openARButton.setOnClickListener {
-            val intent = Intent(this, PuzzleGameActivity::class.java)
-            startActivity(intent)
-        }
+
 
     }
 
@@ -149,16 +148,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setInitialTargetProgress(userId: String) {
+     fun setInitialTargetProgress(userId: String) {
         val userProgressRef = FirebaseDatabase.getInstance().reference
             .child("UserProgress")
             .child(userId)
 
         userProgressRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (!snapshot.exists()) {
+                if (!snapshot.child("MatchEasyLevel").exists()) {
                     val initialProgress = mapOf(
-                        "A1EasyLevel" to mapOf(
+                        "MatchEasyLevel" to mapOf(
                             "1" to true,
                             "2" to false,
                             "3" to false,
@@ -168,7 +167,7 @@ class MainActivity : AppCompatActivity() {
                             "7" to false,
                             "8" to false
                         ),
-                        "A2MediumLevel" to mapOf(
+                        "MatchMediumLevel" to mapOf(
                             "1" to false,
                             "2" to false,
                             "3" to false,
@@ -178,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                             "7" to false,
                             "8" to false
                         ),
-                        "A3HardLevel" to mapOf(
+                        "MatchHardLevel" to mapOf(
                             "1" to false,
                             "2" to false,
                             "3" to false,
@@ -190,7 +189,7 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
 
-                    userProgressRef.setValue(initialProgress)
+                    userProgressRef.updateChildren(initialProgress)
                         .addOnSuccessListener {
                             // Handle success
                         }

@@ -1,4 +1,10 @@
-package com.achelmas.numart.easyLevelMVC
+package com.achelmas.numart
+
+import com.achelmas.numart.AdapterOfMatchLvl1
+import com.achelmas.numart.easyLevelMVC.ModelOfEasyLvl
+
+
+
 import android.util.Log
 
 import android.os.Bundle
@@ -19,18 +25,18 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 
-class EasyLevelActivity : AppCompatActivity() {
+class MatchLvl1Activity : AppCompatActivity() {
 
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: AdapterOfEasyLvl
+    private lateinit var adapter: AdapterOfMatchLvl1
     private lateinit var easyLvlList: ArrayList<ModelOfEasyLvl>
     private lateinit var myReference: DatabaseReference
     private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_easy_level)
+        setContentView(R.layout.activity_match_level1)
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -55,8 +61,8 @@ class EasyLevelActivity : AppCompatActivity() {
         myReference = FirebaseDatabase.getInstance().reference
 
         val userId = mAuth!!.currentUser!!.uid
-        val userProgressRef = myReference.child("UserProgress").child(userId).child("A1EasyLevel")
-        val targetsRef = myReference.child("Easy Level")
+        val userProgressRef = myReference.child("UserProgress").child(userId).child("MatchEasyLevel")
+        val targetsRef = myReference.child("Match Level1")
 
         // Kullanıcı ilerlemesini ve hedefleri paralel olarak çek
         userProgressRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -79,12 +85,13 @@ class EasyLevelActivity : AppCompatActivity() {
                             // İlk hedef her zaman açık olacak
                             model.isUnlocked = userProgressSnapshot.child(model.targetNumber).value == true || model.targetNumber == "1"
                             easyLvlList.add(model)
+                            Log.d("TAG", "isunlocked: ${model.isUnlocked}")
 
-                            Log.d("FirebaseData", "Target: ${model.target}, Target Number: ${model.targetNumber}, Numbers: ${model.number1}, ${model.number2}, ${model.number3}, ${model.number4}")
+                            Log.d("TAG", "Target: ${model.target}, Target Number: ${model.targetNumber}, Numbers: ${model.number1}, ${model.number2}, ${model.number3}, ${model.number4}")
 
                         }
 
-                        adapter = AdapterOfEasyLvl(this@EasyLevelActivity, easyLvlList)
+                        adapter = AdapterOfMatchLvl1(this@MatchLvl1Activity, easyLvlList)
                         recyclerView.adapter = adapter
                         adapter.notifyDataSetChanged()
                     }

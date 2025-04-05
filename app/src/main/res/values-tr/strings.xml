@@ -69,4 +69,5 @@
     <string name="bottomSheetLayoutOfLanguages_Application_language">Uygulama dili</string>
     <string name="bottomSheetLayoutOfLanguages_English">İngilizce</string>
     <string name="bottomSheetLayoutOfLanguages_Turkish">Türkçe</string>
+    <string name="ar_match_game">Match Game</string>
 </resources>
