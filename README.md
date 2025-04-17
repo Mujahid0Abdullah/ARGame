@@ -15,8 +15,7 @@
 </div>
 
    <br/> 
-
-![Feature graphic](https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/101.png)
+            <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/mainpage.jpg" width="265px">
    <br/> 
 
 # 🧠 Arithmatika: Math ARoundUs  
@@ -66,6 +65,7 @@ Her ülke için kültürel bilgiler, selamlaşmalar ve sayılar öğretilir. Ava
 | Backend            | Firebase                                |
 | Tasarım Araçları   | Figma                                   |
 | Sürüm Kontrol      | Git + GitHub                            |
+| Proje Yönetimi     | DevOps + trello                         |
 
 ---
 
