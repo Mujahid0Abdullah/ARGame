@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".MainActivity">
-
+    <!-- Main layout for the activity -->
     <RelativeLayout
         android:id="@+id/mainActivity_toolbar_relativeLayoutId"
         android:layout_width="match_parent"
@@ -19,9 +19,12 @@
             android:background="@color/primaryColor"
             app:layout_scrollFlags="scroll|snap|enterAlways"
             app:popupTheme="@style/Theme.MaterialComponents.Light"
+
             app:title="@string/app_name"
             app:titleTextAppearance="@style/styleOfToolbar"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@color/white"
+
+            />
     </RelativeLayout>
 
 
@@ -29,6 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/mainActivity_toolbar_relativeLayoutId">
+
+
+
 
         <RelativeLayout
             android:layout_gravity="center"
@@ -39,6 +45,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:baselineAligned="false"
                 android:orientation="vertical">
 
                 <TextView
@@ -51,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:textSize="23sp"
                     android:fontFamily="@font/righteous"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
                 <TextView
                     android:text="@string/main_activity_description"
                     android:textColor="@color/black"
@@ -59,34 +66,41 @@
                     android:layout_marginLeft="15dp"
                     android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     android:fontFamily="@font/righteous"
-                    android:layout_height="match_parent"/>
-
+                    android:layout_height="match_parent" />
                 <TextView
                     android:text="@string/pick_levels"
-                    android:textColor="@color/gray"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
                     android:gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_width="match_parent"
+                    android:textSize="20sp"
                     android:fontFamily="@font/righteous"
-                    android:textSize="12sp"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
 
 
 
                 <RelativeLayout
                     android:id="@+id/sum_game"
+                    android:layout_width="0dp"
+                    android:layout_height="255dp"
                     android:layout_below="@id/mainActivity_mediumLevel_relativelayoutId"
-                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginTop="193dp"
                     android:layout_marginRight="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="125dp">
+                    android:layout_weight="1">
 
                     <RelativeLayout
                         android:id="@+id/mainActivity_hardLevelId"
@@ -96,13 +110,14 @@
                         android:layout_marginTop="23dp"
                         android:layout_marginRight="10dp"
                         android:background="@drawable/background_levels"
-                        android:backgroundTint="#C7A1FF43">
+                        android:backgroundTint="#FFAB91">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="20dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginBottom="17dp"
                             android:fontFamily="@font/teko_semibold"
                             android:text="@string/ar_sum_game"
                             android:textColor="@color/black"
@@ -111,20 +126,22 @@
 
                     <ImageView
                         android:layout_width="130dp"
-                        android:layout_marginRight="10dp"
                         android:layout_height="130dp"
-                        android:layout_alignParentRight="true"
+                        android:foregroundGravity="center"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="10dp"
                         android:src="@drawable/vrcup" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/match_game"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="0dp"
+                    android:layout_height="255dp"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginTop="193dp"
                     android:layout_marginRight="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="125dp">
+                    android:layout_weight="1">
 
                     <RelativeLayout
                         android:id="@+id/main_match_btn"
@@ -139,8 +156,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
+                            android:layout_alignParentBottom="true"
                             android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"
                             android:fontFamily="@font/teko_semibold"
                             android:text="@string/ar_match_game"
                             android:textColor="@color/black"
@@ -149,20 +167,12 @@
 
                     <ImageView
                         android:layout_width="130dp"
-                        android:layout_marginRight="10dp"
                         android:layout_height="130dp"
                         android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
                         android:src="@drawable/bigenner" />
 
                 </RelativeLayout>
-                <Button
-                    android:id="@+id/openARButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Open AR Puzzle"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"/>
 
             </LinearLayout>
 
