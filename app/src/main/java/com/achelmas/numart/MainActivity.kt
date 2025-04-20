@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var easyLevelBtn : RelativeLayout
     private lateinit var mediumLevelBtn : RelativeLayout
     private lateinit var hardLevelBtn : RelativeLayout
+    private lateinit var openARButton : Button
 
     //Firebase
     private var mAuth: FirebaseAuth? = null
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mAuth = FirebaseAuth.getInstance()
+        Log.d("TAG", mAuth.toString())
 
         // Initialize variables
         toolbar = findViewById(R.id.mainActivity_toolBarId)
@@ -83,6 +87,13 @@ class MainActivity : AppCompatActivity() {
         if (userId != null) {
             setInitialTargetProgress(userId)  // Kullanıcının ilerlemesini Firebase'e kaydeder
         }
+        openARButton = findViewById(R.id.openARButton)
+        println("hi")
+        openARButton.setOnClickListener {
+            val intent = Intent(this, PuzzleGameActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun getFullNameProcess() {
@@ -141,45 +152,58 @@ class MainActivity : AppCompatActivity() {
     fun setInitialTargetProgress(userId: String) {
         val userProgressRef = FirebaseDatabase.getInstance().reference
             .child("UserProgress")
-            .child(userId)  // Kullanıcıya özel
+            .child(userId)
 
-        val initialProgress = mapOf(
-            "A1EasyLevel" to mapOf(
-                "1" to true,   // İlk hedef açık
-                "2" to false,  // İkinci hedef kapalı
-                "3" to false,   // Üçüncü hedef kapalı
-                "4" to false,
-                "5" to false,
-                "6" to false,
-                "7" to false,
-                "8" to false
-            ),
-            "A2MediumLevel" to mapOf(
-                "1" to false,   // İlk hedef açık
-                "2" to false,  // İkinci hedef kapalı
-                "3" to false,   // Üçüncü hedef kapalı
-                "4" to false,
-                "5" to false,
-                "6" to false,
-                "7" to false,
-                "8" to false
-            ),
-            "A3HardLevel" to mapOf(
-                "1" to false,   // İlk hedef açık
-                "2" to false,  // İkinci hedef kapalı
-                "3" to false,   // Üçüncü hedef kapalı
-                "4" to false,
-                "5" to false,
-                "6" to false,
-                "7" to false,
-                "8" to false
-            )
-        )
+        userProgressRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    val initialProgress = mapOf(
+                        "A1EasyLevel" to mapOf(
+                            "1" to true,
+                            "2" to false,
+                            "3" to false,
+                            "4" to false,
+                            "5" to false,
+                            "6" to false,
+                            "7" to false,
+                            "8" to false
+                        ),
+                        "A2MediumLevel" to mapOf(
+                            "1" to false,
+                            "2" to false,
+                            "3" to false,
+                            "4" to false,
+                            "5" to false,
+                            "6" to false,
+                            "7" to false,
+                            "8" to false
+                        ),
+                        "A3HardLevel" to mapOf(
+                            "1" to false,
+                            "2" to false,
+                            "3" to false,
+                            "4" to false,
+                            "5" to false,
+                            "6" to false,
+                            "7" to false,
+                            "8" to false
+                        )
+                    )
 
-        // Firebase'e kaydetme işlemi
-        userProgressRef.setValue(initialProgress)
-            .addOnSuccessListener {}
-            .addOnFailureListener {}
+                    userProgressRef.setValue(initialProgress)
+                        .addOnSuccessListener {
+                            // Handle success
+                        }
+                        .addOnFailureListener {
+                            // Handle failure
+                        }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
     }
 
 

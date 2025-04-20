@@ -52,7 +52,7 @@ class SplashScreenActivity : AppCompatActivity() {
         }
         else {
             // User is logged in, go to MainActivity
-            var intent = Intent(this@SplashScreenActivity, MainActivity::class.java)
+            var intent = Intent(this@SplashScreenActivity, Main::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }

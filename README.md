@@ -12,14 +12,15 @@
             🌟 Mujahid Alabdullah - 200541605 🌟
           <br/>
       </h3>
+<h4>Porje Dökümanı : <a href= "https://docs.google.com/document/d/1ubI3OFqzkjR_8TAjsisP0jeOMxRGo8e3/edit?usp=sharing&ouid=116800964171632565370&rtpof=true&sd=true">PROJE DOC (SWOT , MARS , THS , UMLS ve SAD dahil )</a></h4>
+      <h4>Porje Dökümanı : <a href= "https://mujahid0abdullah.github.io/ARGameView/">PROJE Landing page</a></h4>
 </div>
 
    <br/> 
-
-![Feature graphic](https://raw.githubusercontent.com/MuhammadAl32/num-proje/refs/heads/main/back/101.png)
+            <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/mainpage.jpg" width="265px">
    <br/> 
 
-# 🧠 Arithmatika: Math ARoundUs  
+# 🧠 Arithmatika
 *Eğitici Artırılmış Gerçeklik (AR) Tabanlı Mobil Oyun*
 
 
@@ -66,6 +67,7 @@ Her ülke için kültürel bilgiler, selamlaşmalar ve sayılar öğretilir. Ava
 | Backend            | Firebase                                |
 | Tasarım Araçları   | Figma                                   |
 | Sürüm Kontrol      | Git + GitHub                            |
+| Proje Yönetimi     | DevOps + trello                         |
 
 ---
 

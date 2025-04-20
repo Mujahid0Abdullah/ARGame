@@ -25,5 +25,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NumARt"
+rootProject.name = "Math ARoundUs"
 include(":app")

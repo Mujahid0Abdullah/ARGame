@@ -57,6 +57,9 @@ dependencies {
     // Cicle Image
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+
+
+
     // Camera X
     implementation("androidx.camera:camera-core:1.4.0")
     implementation("androidx.camera:camera-camera2:1.4.0")
@@ -71,5 +74,8 @@ dependencies {
     implementation("nl.dionsegijn:konfetti-xml:2.0.4")
 
     // AR
+    //implementation("io.github.sceneview:arsceneview:2.2.1")
     implementation("io.github.sceneview:arsceneview:0.9.8")
+    //implementation ("io.github.sceneview:arsceneview:1.0.5")
+    //implementation ("io.github.sceneview:node:1.0.5")
 }

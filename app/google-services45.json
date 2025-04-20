@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "148178928636",
+    "project_id": "numart-22363",
+    "storage_bucket": "numart-22363.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148178928636:android:e31ccce0645f1c97ea2879",
+        "android_client_info": {
+          "package_name": "com.achelmas.numart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgJ-02NEhSTMFMxjBsl_X4tAxa6G1b4gs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

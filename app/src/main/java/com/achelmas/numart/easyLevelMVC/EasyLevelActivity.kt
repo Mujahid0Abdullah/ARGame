@@ -1,4 +1,5 @@
 package com.achelmas.numart.easyLevelMVC
+import android.util.Log
 
 import android.os.Bundle
 import android.view.View
@@ -62,6 +63,10 @@ class EasyLevelActivity : AppCompatActivity() {
             override fun onDataChange(userProgressSnapshot: DataSnapshot) {
                 targetsRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(targetsSnapshot: DataSnapshot) {
+                        Log.d(targetsSnapshot.children.toString(),"firebase")
+                        Log.d(userProgressSnapshot.value.toString(),"firebase")
+                        Log.d("TAG", userProgressRef.toString())
+
                         for (snapshot: DataSnapshot in targetsSnapshot.children) {
                             val model = ModelOfEasyLvl()
                             model.target = snapshot.child("Target").value.toString()
@@ -74,6 +79,9 @@ class EasyLevelActivity : AppCompatActivity() {
                             // İlk hedef her zaman açık olacak
                             model.isUnlocked = userProgressSnapshot.child(model.targetNumber).value == true || model.targetNumber == "1"
                             easyLvlList.add(model)
+
+                            Log.d("FirebaseData", "Target: ${model.target}, Target Number: ${model.targetNumber}, Numbers: ${model.number1}, ${model.number2}, ${model.number3}, ${model.number4}")
+
                         }
 
                         adapter = AdapterOfEasyLvl(this@EasyLevelActivity, easyLvlList)
