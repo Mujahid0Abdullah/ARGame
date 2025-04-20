@@ -60,7 +60,9 @@ Uygulama Android 8.0+ destekli cihazlarda test edilmiştir.
 ## 📷 Uygulama Videosu
 
 
-🎥 [Demo Videosu İzle](https://mujahid0abdullah.github.io/ARGameView/) 
+🎥 [Match Oyunun Demo Videosu İzle](https://youtube.com/shorts/dm-a3USfmCQ?feature=share) 
+
+🎥 [Math Oyunun Demo Videosu İzle](https://youtube.com/shorts/VfHXMOfZC1w?feature=share) 
 
 
 
