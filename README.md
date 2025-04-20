@@ -48,7 +48,7 @@ cd arithmatika
 Android Studio > Open Project > arithmatika
 ---
 ## 📦 APK Dosyası
-📥 [arithmatika.apk](https://mujahid0abdullah.github.io/ARGameView/) 
+📥 [arithmatika.apk](https://drive.google.com/file/d/1OTQU8at3hnIQNXfK2lJuziWtP7Fn1jnp/view?usp=sharing) 
 
 Uygulama Android 8.0+ destekli cihazlarda test edilmiştir.
 
