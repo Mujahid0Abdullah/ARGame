@@ -26,9 +26,41 @@
 
 ## ✨ Proje Hakkında
 
-**Arithmatika** , 5–12 yaş arası çocuklar için geliştirilen, artırılmış gerçeklik (AR) tabanlı eğitici bir mobil oyundur.  uçak yolculuklarında çocuklara hem eğlence hem de öğrenme sunmayı amaçlamaktadır.
+**Arithmatika**, 5–12 yaş arası çocuklar için geliştirilen bir artırılmış gerçeklik (AR) tabanlı mobil eğitim oyunudur. Oyun, matematiksel işlem becerilerini ve dikkat yeteneklerini geliştirmeyi hedeflemektedir. Proje, THY'nin isteği doğrultusunda uçuş sırasında kullanılmak üzere özel olarak tasarlanmıştır.
+
 
 > **Slogan:** *"Gökyüzünde Matematik, Yanı Başında Eğlence!"*
+
+---
+
+## 📦 Kurulum ve Çalıştırma (Adım Adım)
+
+> Bu adımlar, uygulamayı cihazınıza kurmanız ve çalıştırmanız içindir.
+
+### 1. Projeyi Klonlayın
+
+```bash
+git clone https://github.com/kullaniciadi/arithmatika.git
+cd arithmatika 
+```
+
+### 2. Android Studio ile Açıp Çalıştırabilirsiniz
+Android Studio > Open Project > arithmatika
+---
+## 📦 APK Dosyası
+📥 [arithmatika.apk](https://mujahid0abdullah.github.io/ARGameView/) 
+
+Uygulama Android 8.0+ destekli cihazlarda test edilmiştir.
+
+
+---
+
+## 📷 Uygulama Videosu
+
+
+🎥 [Demo Videosu İzle](https://mujahid0abdullah.github.io/ARGameView/) 
+
+
 
 ---
 
@@ -88,13 +120,33 @@ Her ülke için kültürel bilgiler, selamlaşmalar ve sayılar öğretilir. Ava
 🧩 Yeni içerikler geliştiriliyor
 
 ---
+---
+
+## 🗓️ Haftalık Çalışma Takvimi
+
+| Hafta | Tarih Aralığı        | Yapılan Çalışmalar                                   |
+|-------|-----------------------|------------------------------------------------------|
+| 1     | 15 - 22 Mart 2025     | Proje planlaması, teknoloji seçimi, gereksinim analizi |
+| 2     | 23 - 29 Mart 2025     | UI/UX tasarımları, sistem mimarisi belirleme         |
+| 3     | 30 Mar - 5 Nisan 2025 | 3D model tasarımları, AR sahne testi                 |
+| 4     | 6 - 12 Nisan 2025     | Matematik görev modülü geliştirme                    |
+| 5     | 13 - 25 Nisan 2025    | Dikkat oyunu modülü geliştirme, Firebase bağlantısı  |
+| 6     | 25 - 29 Nisan 2025    | Kullanıcı arayüzleri, avatar oluşturma ekranları     |
+| 7     | 27 Nisan - 3 Mayıs    | Görev entegrasyonu ve seviye sistemi geliştirme      |
+| 8     | 4 - 10 Mayıs          | Test planı uygulama: birim testler, kullanıcı testleri|
+| 9     | 11 - 17 Mayıs         | Hataların düzeltilmesi, video hazırlıkları           |
+| 10    | 18 - 20 Mayıs         | APK üretimi, son kontrol, README ve teslim işlemleri |
+
+---
+
+
 
 
 
 ## 📬 İletişim
 
 Geliştirici: [Mujahıd ALABDULLAH]  
-📧 E-posta:   
+📧 E-posta: 200541605@firat.edu.tr
 🔗 [LinkedIn / Kişisel Web Sitesi]
 
 ---
