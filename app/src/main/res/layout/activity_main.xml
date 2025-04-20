@@ -193,14 +193,6 @@
                         android:src="@drawable/hard_level" />
 
                 </RelativeLayout>
-                <Button
-                    android:id="@+id/openARButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Open AR Puzzle"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"/>
 
             </LinearLayout>
 
