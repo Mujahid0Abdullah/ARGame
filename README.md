@@ -17,7 +17,9 @@
 </div>
 
    <br/> 
-            <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/mainpage.jpg" width="265px">
+            <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/7.jpg" width="265px">
+           <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/20.jpg" width="265px">
+
    <br/> 
 
 # 🧠 Arithmatika
