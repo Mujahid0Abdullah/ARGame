@@ -41,11 +41,13 @@ class MatchMainActivity : AppCompatActivity() {
     private lateinit var easyLevelBtn : RelativeLayout
     private lateinit var mediumLevelBtn : RelativeLayout
     private lateinit var hardLevelBtn : RelativeLayout
-    private lateinit var openARButton : Button
 
-    //Firebase
+    //   Firebase authentication instance
     private var mAuth: FirebaseAuth? = null
-
+    /**-----------------------------------------------------------------------------
+     * Called when the activity is first created.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down, this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -94,7 +96,9 @@ class MatchMainActivity : AppCompatActivity() {
 
 
     }
-
+    /**-------------------------------------------------------------------------------------
+     * Fetches the user's full name and age from Firebase and updates the UI.
+     */
     private fun getFullNameProcess() {
 
         var reference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(mAuth!!.currentUser!!.uid)
@@ -132,7 +136,9 @@ class MatchMainActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
     }
-
+    /**-----------------------------------------------------------------------------------------
+     * Sets up the toolbar menu and handles menu item clicks.
+     */
     private fun itemsOfToolbar() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -148,6 +154,11 @@ class MatchMainActivity : AppCompatActivity() {
         }
     }
 
+
+    /**--------------------------------------------------------------------------------------------------
+     * Initializes the user's progress in Firebase if it does not already exist.
+     * @param userId The unique ID of the user.
+     */
      fun setInitialTargetProgress(userId: String) {
         val userProgressRef = FirebaseDatabase.getInstance().reference
             .child("UserProgress")
