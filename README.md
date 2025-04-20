@@ -50,7 +50,7 @@ cd arithmatika
 Android Studio > Open Project > arithmatika
 ---
 ## 📦 APK Dosyası
-📥 [arithmatika.apk](https://drive.google.com/file/d/1OTQU8at3hnIQNXfK2lJuziWtP7Fn1jnp/view?usp=sharing) 
+📥 [arithmatika.apk](https://mega.nz/file/TihwXZxI#Ab-_pGJW-Z8VZlsWzx11uVeOk-tvWlAOh1A-zEBitSc) 
 
 Uygulama Android 8.0+ destekli cihazlarda test edilmiştir.
 
