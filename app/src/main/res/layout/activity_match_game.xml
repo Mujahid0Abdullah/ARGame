@@ -7,9 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
-    <io.github.sceneview.ar.ArSceneView
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/arSceneViewId"
         android:layout_width="match_parent"
+        android:name="com.google.ar.sceneform.ux.ArFragment"
         android:layout_height="match_parent"/>
 
         <RelativeLayout
@@ -22,36 +23,7 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
-            <RelativeLayout
-                android:id="@+id/gameActivity_scoreView"
-                android:layout_above="@id/operationButtonsId"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/gameActivity_starView"
-                    android:src="@drawable/star_icon"
-                    android:layout_width="250dp"
-                    android:layout_marginBottom="-133dp"
-                    android:layout_marginTop="-1dp"
-                    android:layout_centerInParent="true"
-                    android:layout_height="210dp"/>
 
-                <!-- Hedef -->
-                <TextView
-                    android:id="@+id/gameActivity_targetView"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="@font/righteous"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:paddingBottom="13dp"
-                    android:layout_centerInParent="true"
-                    android:layout_height="wrap_content"
-                    android:text="101"
-                    android:textColor="@color/black"
-                    android:textSize="30sp" />
-            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/operationButtonsId"
@@ -61,85 +33,36 @@
                 android:layout_marginBottom="15dp"
                 android:gravity="center"
                 android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/gameActivity_scoreView"
+                    android:layout_above="@id/operationButtonsId"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/gameActivity_additionButton"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardBackgroundColor="#FFC107"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp">
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/gameActivity_starView"
+                        android:src="@drawable/star_icon"
+                        android:layout_width="280dp"
+                        android:layout_marginBottom="-23dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_centerInParent="true"
+                        android:layout_height="130dp"/>
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/addition_icon" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/gameActivity_subtractionButton"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginLeft="25dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardBackgroundColor="#FF9800"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/subtraction_icon" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/gameActivity_multiplicationButton"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginLeft="25dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardBackgroundColor="#FF5722"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/multiplication_icon" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/gameActivity_divisionButton"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginLeft="25dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardBackgroundColor="#F44336"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/division_icon" />
-
-                </androidx.cardview.widget.CardView>
+                    <!-- Hedef -->
+                    <TextView
+                        android:id="@+id/gameActivity_targetView"
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/righteous"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:paddingBottom="13dp"
+                        android:layout_centerInParent="true"
+                        android:layout_height="wrap_content"
+                        android:text="101"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+                </RelativeLayout>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/gameActivity_refreshButton"
@@ -212,7 +135,7 @@
 
             <LinearLayout
                 android:id="@+id/gameActivity_refreshBtn_linearLayout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:visibility="gone"
@@ -272,8 +195,8 @@
                     android:focusable="true"
                     android:layout_gravity="center"
                     android:foreground="?attr/selectableItemBackground"
-                    app:cardBackgroundColor="#56FFFFFF"
-                    app:cardCornerRadius="10dp"
+                    app:cardBackgroundColor="#7FAF704C"
+                    app:cardCornerRadius="20dp"
                     app:cardElevation="0dp">
 
                     <TextView
@@ -286,7 +209,7 @@
                         android:layout_height="wrap_content"
                         android:text=""
                         android:gravity="center"
-                        android:fontFamily="@font/righteous"
+                        android:fontFamily="@font/wendy_one"
                         android:textColor="@color/black"
                         android:layout_gravity="center"
                         android:textAlignment="center"

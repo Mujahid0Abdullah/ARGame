@@ -1,4 +1,5 @@
 package com.achelmas.numart
+
 import android.util.Log
 
 import android.animation.Animator
@@ -17,20 +18,22 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import io.github.sceneview.ar.ArSceneView
-import io.github.sceneview.ar.node.ArModelNode
-import io.github.sceneview.math.Position
+//import io.github.sceneview.ar.ArSceneView
+//import io.github.sceneview.ar.node.ArModelNode
+//import io.github.sceneview.math.Position
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import nl.dionsegijn.konfetti.xml.KonfettiView
 import java.util.concurrent.TimeUnit
+import com.google.ar.sceneform.Node
+import com.google.ar.sceneform.math.Vector3
+import com.google.ar.sceneform.rendering.ModelRenderable
+import com.google.ar.sceneform.ux.ArFragment
+import android.net.Uri
 
 class MatchGameActivity : AppCompatActivity() {
 
-    private lateinit var additionButton: CardView
-    private lateinit var subtractionButton: CardView
-    private lateinit var multiplicationButton: CardView
-    private lateinit var divisionButton: CardView
+
     private lateinit var refreshButton: CardView
     private lateinit var expressionView: TextView
     private lateinit var targetView: TextView
@@ -39,15 +42,16 @@ class MatchGameActivity : AppCompatActivity() {
     private lateinit var nextButton: CardView
     private lateinit var refreshButtonWithText: CardView
 
-    private var currentResult: Int? = null
+    private var currentResult: String? = null
     private var currentOperation: String? = null
-    private var target: Int = 0
+    private var target:  String? = null
     private var targetNumber: Int = 0
     private var numbers = mutableListOf<Int>()
     private var usedNumbers = mutableSetOf<Int>()
     private val history = StringBuilder()
+    private lateinit var arFragment: ArFragment
 
-    private lateinit var sceneView: ArSceneView
+    // private lateinit var sceneView: ArSceneView
     private lateinit var konfettiView: KonfettiView
 
     // Numbers
@@ -62,13 +66,10 @@ class MatchGameActivity : AppCompatActivity() {
         // Set language
         LanguageManager.loadLocale(this)
 
-        setContentView(R.layout.activity_game)
+        setContentView(R.layout.activity_match_game)
 
         // Button and TextView initializations
-        additionButton = findViewById(R.id.gameActivity_additionButton)
-        subtractionButton = findViewById(R.id.gameActivity_subtractionButton)
-        multiplicationButton = findViewById(R.id.gameActivity_multiplicationButton)
-        divisionButton = findViewById(R.id.gameActivity_divisionButton)
+
         refreshButton = findViewById(R.id.gameActivity_refreshButton)
         expressionView = findViewById(R.id.gameActivity_expressionView)
         targetView = findViewById(R.id.gameActivity_targetView)
@@ -81,7 +82,7 @@ class MatchGameActivity : AppCompatActivity() {
 
         var bundle: Bundle = intent.extras!!
         if(bundle != null) {
-            target = bundle.getString("Target")!!.toInt()
+            target = bundle.getString("Target").toString()
             targetNumber = bundle.getString("Target Number")!!.toInt()
             number1 = bundle.getString("Number1")!!.toInt()
             number2 = bundle.getString("Number2")!!.toInt()
@@ -89,15 +90,13 @@ class MatchGameActivity : AppCompatActivity() {
             number4 = bundle.getString("Number4")!!.toInt()
         }
 
-        sceneView = findViewById(R.id.arSceneViewId)
+        //sceneView = findViewById(R.id.arSceneViewId)
+        arFragment = supportFragmentManager.findFragmentById(R.id.arSceneViewId) as ArFragment
 
         initializeGame()
 
         // Operation buttons
-        additionButton.setOnClickListener { onOperationSelected("+") }
-        subtractionButton.setOnClickListener { onOperationSelected("-") }
-        multiplicationButton.setOnClickListener { onOperationSelected("×") }
-        divisionButton.setOnClickListener { onOperationSelected("÷") }
+
         refreshButton.setOnClickListener {
             finish()
             startActivity(intent)
@@ -106,51 +105,66 @@ class MatchGameActivity : AppCompatActivity() {
     }
 
     // ----------------------------------------------------------------------------------------------
+
     private fun add3DNumberButton(
-        glbFileLocation: String, // 3D model dosyası (örnek: "models/number24.glb")
-        position: Position, // Modelin AR sahnesindeki pozisyonu
-        number: Int, // Sayıyı temsil eder
-        onClick: (Int) -> Unit // Tıklanınca yapılacak işlem
+        modelUri: String, // 3D model URI (e.g., "models/number24.sfb")
+        position: Vector3, // // Model's position
+        number: Int, // Number it represents
+        onClick: (String) -> Unit // Tıklanınca yapılacak işlem
     ) {
-        val numberNode = ArModelNode().apply {
-            loadModelGlbAsync(glbFileLocation) {
-                scale = Position(0.005f, 0.005f, 0.005f) // Modelin boyutunu ayarla
-                this.position = position // Modelin sahnedeki pozisyonunu ayarla
+        ModelRenderable.builder()
+            .setSource(this, Uri.parse(modelUri)) // GLB file in assets
+            .setIsFilamentGltf(true)
+            .build()
+            .thenAccept { renderable ->
+                val node = Node().apply {
+                    this.renderable = renderable
+                    this.worldPosition = position // Position of the model in AR space
+                    // Adjust the scale of the 3D model
+                    this.worldScale = Vector3(0.0025f, 0.0025f, 0.0025f)
+                }
+
+                arFragment.arSceneView.scene.addChild(node)
+
+                // Set a tap listener to handle user interaction with the 3D model
+                node.setOnTapListener { _, _ -> onClick(modelUri.split(".").first()) }
+
             }
-
-            onTap = { _, _ -> onClick(number) } // Tıklanınca sayıyı geri döner
-        }
-
-        sceneView.addChild(numberNode)
+            .exceptionally { throwable ->
+                // Handle any errors that occur when loading the model
+                throwable.printStackTrace()
+                null
+            }
     }
+
 
     private fun addNumberButtons() {
         // Modellerin farklı pozisyonlara yerleştirilmesi (x, y, z ekseninde farklılık)
         val positions = listOf(
-            Position(-1.0f, 0.5f, -1.5f), // Sol üst
-            Position(1.0f, 0.5f, -1.5f),  // Sağ üst
-            Position(-1.0f, -0.5f, -2.0f), // Sol alt
-            Position(1.0f, -0.5f, -2.0f) ,  // Sağ alt
-            Position(-3.0f, -0.5f, -2.0f) ,  // Sağ alt
-            Position(1.0f, -0.5f, -2.0f) ,  // Sağ alt
+            Vector3(-1.0f, 0.5f, -1.5f), // Sol üst
+            Vector3(1.0f, 0.5f, -1.5f),  // Sağ üst
+            Vector3(-0.5f, -0.5f, -1.0f), // Sol alt
+            Vector3(1.0f, -0.5f, -2.0f) ,  // Sağ alt
+            Vector3(-3.0f, -0.5f, -2.0f) ,  // Sağ alt
+            Vector3(0.5f, 0.5f, -2.0f) ,  // Sağ alt
 
         )
 
         // Her bir sayıyı ve pozisyonunu ekleyelim
         val numbersAndModels = listOf(
             Triple("models/number7.glb", positions[0], 5),   // Üstte
-            Triple("models/number2.glb", positions[1], 2),   // Altta
-            Triple("models/number5.glb", positions[2], 5), // Solda
+            Triple("models/Eiffel.glb", positions[1], 2),   // Altta
+            Triple("models/Eiffel.glb", positions[2], 2), // Solda
 
-            Triple("models/number3.glb", positions[3], 1) , // Sağda
-            Triple("models/number45.glb", positions[4], 45)  ,// Sağda
+            Triple("models/pyramid.glb", positions[3], 1) , // Sağda
+            Triple("models/numberp.glb", positions[4], 45)  ,// Sağda
             Triple("models/Ayasofya.glb", positions[5], 23)  ,// Sağda
 
         )
 
         for ((model, position, number) in numbersAndModels) {
             add3DNumberButton(
-                glbFileLocation = model,
+                modelUri = model,
                 position = position,
                 number = number
             ) { selectedNumber ->
@@ -178,12 +192,11 @@ class MatchGameActivity : AppCompatActivity() {
         currentResult = null
         currentOperation = null
         history.clear()
-        expressionView.text = resources.getString(R.string.start_by_choosing_number)
+        expressionView.text = resources.getString(R.string.start_by_choosing_number2)
 
         resetScoreView() // Animasyonu geri döndür
 
-        // Enable operation buttons
-        enableOperationButtons()
+
     }
 
 
@@ -208,10 +221,10 @@ class MatchGameActivity : AppCompatActivity() {
     }
 
     // Number and operation selection===================================
-    private fun onNumberSelected(number: Int) {
+    private fun onNumberSelected(number: String) {
         if (currentResult == null ) {
             currentResult= number
-            Toast.makeText(this, "you selected ${number}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "you selected ${number.split("/")[1]}", Toast.LENGTH_SHORT).show()
 
             return
         }
@@ -257,45 +270,12 @@ class MatchGameActivity : AppCompatActivity() {
         }*/
     }
 
-    private fun onOperationSelected(operation: String) {
-        if (currentResult != null && currentOperation == null) {
-            currentOperation = operation
-            expressionView.text = "${history}${currentResult} $operation"
-        } else if (currentOperation != null) {
-            Toast.makeText(this, resources.getString(R.string.operation_already_selected), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, resources.getString(R.string.select_number_first), Toast.LENGTH_SHORT).show()
-        }
-    }
 
-    private fun calculateResult(firstNumber: Int, secondNumber: Int, operation: String): Int? {
-        return when (operation) {
-            "+" -> firstNumber + secondNumber
-            "-" -> firstNumber - secondNumber
-            "×" -> firstNumber * secondNumber
-            "÷" -> if (secondNumber != 0) firstNumber / secondNumber else null
-            else -> null
-        }
-    }
-
-    private fun checkTarget(result: Int) {
-        when {
-            result == target -> {
-                onGameOver(true) // Target reached
-            }
-            result > target -> {
-                Toast.makeText(this, resources.getString(R.string.target_exceeded), Toast.LENGTH_LONG).show()
-            }
-        }
-    }
 
     //GAME OVER -----------------------------------------------
     private fun onGameOver(isSuccess: Boolean) {
         // Visibility of buttons
-        additionButton.visibility = View.GONE
-        subtractionButton.visibility = View.GONE
-        multiplicationButton.visibility = View.GONE
-        divisionButton.visibility = View.GONE
+
         refreshButton.visibility = View.GONE
 
         if (isSuccess) {
@@ -360,8 +340,7 @@ class MatchGameActivity : AppCompatActivity() {
             }
         }
 
-        // Disable all buttons
-        disableAllButtons()
+
     }
 
     private fun unlockNextTarget(userId: String, completedTarget: Int) {
@@ -452,18 +431,37 @@ class MatchGameActivity : AppCompatActivity() {
         // Start the first animation
         handler.post(animationRunnable)
     }
-
-    private fun disableAllButtons() {
-        additionButton.isEnabled = false
-        subtractionButton.isEnabled = false
-        multiplicationButton.isEnabled = false
-        divisionButton.isEnabled = false
+    private fun onOperationSelected(operation: String) {
+        if (currentResult != null && currentOperation == null) {
+            currentOperation = operation
+            expressionView.text = "${history}${currentResult} $operation"
+        } else if (currentOperation != null) {
+            Toast.makeText(this, resources.getString(R.string.operation_already_selected), Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, resources.getString(R.string.select_number_first), Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun enableOperationButtons() {
-        additionButton.isEnabled = true
-        subtractionButton.isEnabled = true
-        multiplicationButton.isEnabled = true
-        divisionButton.isEnabled = true
+    private fun calculateResult(firstNumber: Int, secondNumber: Int, operation: String): Int? {
+        return when (operation) {
+            "+" -> firstNumber + secondNumber
+            "-" -> firstNumber - secondNumber
+            "×" -> firstNumber * secondNumber
+            "÷" -> if (secondNumber != 0) firstNumber / secondNumber else null
+            else -> null
+        }
     }
+    /*
+        private fun checkTarget(result: Int) {
+            when {
+                result == target -> {
+                    onGameOver(true) // Target reached
+                }
+                result > target -> {
+                    Toast.makeText(this, resources.getString(R.string.target_exceeded), Toast.LENGTH_LONG).show()
+                }
+            }
+        }*/
+
+
 }
