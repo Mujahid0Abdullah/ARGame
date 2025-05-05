@@ -38,7 +38,7 @@
 
     <string name="pick_levels">Seviyenizi seçin ve eğlence başlasın!</string>
     <string name="hello_fullname">Merhaba ... 👋</string>
-    <string name="main_activity_description">NumARt\'ın büyülü dünyasına hoş geldiniz! 🪄 \nHadi sayılarla oynayalım 🧮 ve birlikte harika şeyler öğrenelim! 📚</string>
+    <string name="main_activity_description">ARitmatikA\'ya hoş geldin! 🪄 Sayılarla dolu süper eğlenceli bir yolculuk başlıyor! 🧮 Haydi, oyunlarla öğrenelim ve harikalar yaratalım! 📚</string>
     <string name="settingsActivity_App_language">Uygulama Dili</string>
     <string name="settingsActivity_Suggestions">Önerilerinizi bize iletin</string>
     <string name="settingsActivity_Developed_by">Geliştiren</string>
@@ -53,7 +53,7 @@
     <string name="number_already_used">Bu sayıyı zaten kullandınız!</string>
     <string name="invalid_operation">Geçersiz işlem!</string>
     <string name="select_operation">Lütfen bir işlem seçin!</string>
-    <string name="target_not_reached">Hedefe ulaşamadınız! Tekrar denemek için yenile düğmesine tıklayın.</string>
+    <string name="target_not_reached">Yanlış nesne buldun! Tekrar denemek için yenile düğmesine tıklayın.</string>
     <string name="next_target_already_unlocked">Sonraki hedef zaten kilidi açılmış!</string>
     <string name="target_reached">Tebrikler! Hedefinize ulaştınız! 🎉</string>
     <string name="next_target_unlocked">Sonraki hedefin kilidi açıldı!</string>
@@ -63,6 +63,8 @@
     <string name="select_number_first">Lütfen önce bir sayı seçin!</string>
     <string name="start_by_choosing_number">Bir sayı seçerek başlayın</string>
     <string name="settingsActivity_Age">Yaş: </string>
+    <string name="start_by_choosing_number2">Tekrarlı şekiller seç</string>
+
     <string name="settingsActivity_targetsUnlocked">Kilidi Açılan Hedefler: </string>
     <string name="to_next_target">Bir sonraki hedefimize</string>
     <string name="restart_game">Oyunu yeniden başlat</string>

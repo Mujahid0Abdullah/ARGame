@@ -34,7 +34,7 @@
     <string name="easy_level">Easy Level</string>
     <string name="medium_level">Medium Level</string>
     <string name="hard_level">Hard Level</string>
-    <string name="ar_sum_game">Sum Game</string>
+    <string name="ar_sum_game">Math Game</string>
     <string name="pick_levels">Pick your level and start the fun!</string>
     <string name="hello_fullname">Hello ... 👋</string>
     <string name="main_activity_description">Welcome to the amazing world of Math AR! 🪄 \n Let\'s learn with numbers 🧮 and shapes 📚 together! </string>
@@ -63,6 +63,8 @@
     <string name="select_number_first">Please choose a number first!</string>
     <string name="start_by_choosing_number">Start by choosing a number</string>
     <string name="settingsActivity_Age">"Age : "</string>
+    <string name="start_by_choosing_number2">chose the similar objects</string>
+
     <string name="settingsActivity_targetsUnlocked">"Unlocked Targets : "</string>
     <string name="to_next_target">To our next target</string>
     <string name="restart_game">Restart the game</string>
