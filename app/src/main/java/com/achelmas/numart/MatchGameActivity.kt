@@ -43,11 +43,13 @@ class MatchGameActivity : AppCompatActivity() {
     private lateinit var refreshButtonWithText: CardView
 
     private var currentResult: String? = null
+    private var currentResultNo: Int =100
+
     private var currentOperation: String? = null
     private var target:  String? = null
     private var targetNumber: Int = 0
-    private var numbers = mutableListOf<Int>()
-    private var usedNumbers = mutableSetOf<Int>()
+    private var numbers = mutableListOf<String?>()
+    private var usedNumbers = mutableSetOf<String?>()
     private val history = StringBuilder()
     private lateinit var arFragment: ArFragment
 
@@ -55,10 +57,10 @@ class MatchGameActivity : AppCompatActivity() {
     private lateinit var konfettiView: KonfettiView
 
     // Numbers
-    private var number1: Int = 0
-    private var number2: Int = 0
-    private var number3: Int = 0
-    private var number4: Int = 0
+    private var shape1: String? = null
+    private var shape2: String? = null
+    private var shape3: String? = null
+    private var shape4: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,10 +86,10 @@ class MatchGameActivity : AppCompatActivity() {
         if(bundle != null) {
             target = bundle.getString("Target").toString()
             targetNumber = bundle.getString("Target Number")!!.toInt()
-            number1 = bundle.getString("Number1")!!.toInt()
-            number2 = bundle.getString("Number2")!!.toInt()
-            number3 = bundle.getString("Number3")!!.toInt()
-            number4 = bundle.getString("Number4")!!.toInt()
+            shape1 = bundle.getString("Number1").toString()
+            shape2 = bundle.getString("Number2").toString()
+            shape3 = bundle.getString("Number3").toString()
+            shape4 = bundle.getString("Number4").toString()
         }
 
         //sceneView = findViewById(R.id.arSceneViewId)
@@ -110,7 +112,7 @@ class MatchGameActivity : AppCompatActivity() {
         modelUri: String, // 3D model URI (e.g., "models/number24.sfb")
         position: Vector3, // // Model's position
         number: Int, // Number it represents
-        onClick: (String) -> Unit // Tıklanınca yapılacak işlem
+        onClick: (String,Int) -> Unit // Tıklanınca yapılacak işlem
     ) {
         ModelRenderable.builder()
             .setSource(this, Uri.parse(modelUri)) // GLB file in assets
@@ -121,13 +123,14 @@ class MatchGameActivity : AppCompatActivity() {
                     this.renderable = renderable
                     this.worldPosition = position // Position of the model in AR space
                     // Adjust the scale of the 3D model
-                    this.worldScale = Vector3(0.0025f, 0.0025f, 0.0025f)
+                    this.worldScale = Vector3(1.25f, 1.25f, 1.25f)
                 }
 
                 arFragment.arSceneView.scene.addChild(node)
+                val fileName = modelUri.substringAfterLast("/").substringBefore(".")
 
                 // Set a tap listener to handle user interaction with the 3D model
-                node.setOnTapListener { _, _ -> onClick(modelUri.split(".").first()) }
+                node.setOnTapListener { _, _ -> onClick(fileName,number) }
 
             }
             .exceptionally { throwable ->
@@ -141,27 +144,50 @@ class MatchGameActivity : AppCompatActivity() {
     private fun addNumberButtons() {
         // Modellerin farklı pozisyonlara yerleştirilmesi (x, y, z ekseninde farklılık)
         val positions = listOf(
-            Vector3(-1.0f, 0.5f, -1.5f), // Sol üst
-            Vector3(1.0f, 0.5f, -1.5f),  // Sağ üst
-            Vector3(-0.5f, -0.5f, -1.0f), // Sol alt
-            Vector3(1.0f, -0.5f, -2.0f) ,  // Sağ alt
-            Vector3(-3.0f, -0.5f, -2.0f) ,  // Sağ alt
-            Vector3(0.5f, 0.5f, -2.0f) ,  // Sağ alt
+            Vector3(0.0f, -0.5f, -0.5f), // Left
+                    Vector3(0.2f, -0.5f, -1.0f), // Right
+        Vector3(-0.5f, -0.5f, -1.0f), // Front left
+        Vector3(-0.2f, -0.5f, -0.7f), // Front right
+        Vector3(-0.1f, -0.5f, -1.0f), // Far left
+        Vector3(0.5f, -0.5f, -0.5f) // Center
+
 
         )
+        val gameNumbers = listOf(shape1, shape2, shape3, shape4)
+        var x=-0.5f;
+        for (i in gameNumbers.indices) {
+            val shape = gameNumbers[i]
+            val modelPath = "models/$shape.glb"
+            val position = positions.getOrNull(i) ?: Vector3(x, -0.3f, -0.5f)
+            x += 0.1f
+            add3DNumberButton(
+                modelUri = modelPath,
+                position = position,
+                number = i
+            ) { selectedNumber,noid ->
+                onNumberSelected(selectedNumber,noid)
+            }
+        }
 
+/*
         // Her bir sayıyı ve pozisyonunu ekleyelim
         val numbersAndModels = listOf(
-            Triple("models/number7.glb", positions[0], 5),   // Üstte
-            Triple("models/Eiffel.glb", positions[1], 2),   // Altta
-            Triple("models/Eiffel.glb", positions[2], 2), // Solda
+            Triple("models/jesus.glb", positions[1], 2),   // Altta
+            Triple("models/Moai Statue.glb", positions[2], 2), // Solda
 
             Triple("models/pyramid.glb", positions[3], 1) , // Sağda
-            Triple("models/numberp.glb", positions[4], 45)  ,// Sağda
+            Triple("models/eiffel_tower.glb", positions[4], 45)  ,// Sağda
             Triple("models/Ayasofya.glb", positions[5], 23)  ,// Sağda
+            Triple("models/Great Wall China.glb", positions[0], 5),   // Üstte
+            Triple("models/Coliseo romano.glb", positions[1], 2),   // Altta
+            Triple("models/Burj Khalifa.glb", positions[2], 2), // Solda
 
-        )
+            Triple("models/BigBen.glb", positions[3], 1) , // Sağda
+            Triple("models/Al Aqsa.glb", positions[4], 45)  ,// Sağda
+            Triple("models/jesus.glb", positions[5], 23)  ,// Sağda
 
+        )*/
+/*
         for ((model, position, number) in numbersAndModels) {
             add3DNumberButton(
                 modelUri = model,
@@ -171,6 +197,7 @@ class MatchGameActivity : AppCompatActivity() {
                 onNumberSelected(selectedNumber)
             }
         }
+        */
     }
 
 
@@ -183,13 +210,15 @@ class MatchGameActivity : AppCompatActivity() {
         // Predefined numbers
         numbers.clear()
         usedNumbers.clear()
-        numbers.addAll(listOf(number1, number2, number3, number4))
+        numbers.addAll(listOf(shape1, shape2, shape3, shape4))
 
         targetView.text = "$target"
         targetView.setTextColor(Color.BLACK)
 
         // Reset game state
         currentResult = null
+        currentResultNo = 100
+
         currentOperation = null
         history.clear()
         expressionView.text = resources.getString(R.string.start_by_choosing_number2)
@@ -221,14 +250,20 @@ class MatchGameActivity : AppCompatActivity() {
     }
 
     // Number and operation selection===================================
-    private fun onNumberSelected(number: String) {
+    private fun onNumberSelected(number: String, noid: Int) {
         if (currentResult == null ) {
             currentResult= number
-            Toast.makeText(this, "you selected ${number.split("/")[1]}", Toast.LENGTH_SHORT).show()
-
+            currentResultNo= noid
+            Toast.makeText(this, "you selected ${number}", Toast.LENGTH_SHORT).show()
+            expressionView.text = number
+            usedNumbers.add(number)
             return
         }
-        else if(currentResult == number){
+        else if(noid == currentResultNo  ){
+            Toast.makeText(this, "select another shape", Toast.LENGTH_SHORT).show()
+             }
+
+        else if(currentResult == number && noid != currentResultNo  ){
             onGameOver(true) // Target reached
 
         }else if (currentResult != number) {
@@ -293,7 +328,7 @@ class MatchGameActivity : AppCompatActivity() {
             }
 
             nextButton.setOnClickListener {
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, MatchMainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
                 finish()

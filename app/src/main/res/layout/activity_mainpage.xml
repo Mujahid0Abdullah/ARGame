@@ -174,7 +174,59 @@
 
                 </RelativeLayout>
 
+
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:baselineAligned="false"
+                android:layout_marginTop="270dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/Discover_game_relativelayoutId"
+                    android:layout_width="0dp"
+                    android:layout_height="255dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="193dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:id="@+id/Discover_game"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="23dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/background_levels"
+                        android:backgroundTint="#7A63AF">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/teko_semibold"
+                            android:text="Discover The World "
+                            android:textColor="@color/black"
+                            android:textSize="40sp" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:foregroundGravity="center"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/giraffe_virtual_reality_headset" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
 
         </RelativeLayout>
     </ScrollView>
