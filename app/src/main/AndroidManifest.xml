@@ -43,6 +43,12 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />
+        <activity
+            android:name=".DiscoverGameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DiscoverLvlActivity"
+            android:exported="false" />
         <activity android:name=".MatchGameActivity"
             android:exported="false" />
         <activity
