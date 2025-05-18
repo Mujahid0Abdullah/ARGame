@@ -7,6 +7,10 @@ import android.animation.ObjectAnimator
 import android.animation.AnimatorSet
 import android.content.Intent
 import android.graphics.Color
+import android.media.MediaPlayer
+
+import android.speech.tts.TextToSpeech
+
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -30,6 +34,7 @@ import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import android.net.Uri
+import android.widget.ImageButton
 
 class MatchGameActivity : AppCompatActivity() {
 
@@ -53,6 +58,12 @@ class MatchGameActivity : AppCompatActivity() {
     private val history = StringBuilder()
     private lateinit var arFragment: ArFragment
 
+    private lateinit var correctSound: MediaPlayer
+    private lateinit var wrongSound: MediaPlayer
+    private lateinit var tts: TextToSpeech
+    private var isTtsReady = false
+    private var isMuted = false
+    private lateinit var muteButton: ImageButton
     // private lateinit var sceneView: ArSceneView
     private lateinit var konfettiView: KonfettiView
 
@@ -80,7 +91,7 @@ class MatchGameActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.gameActivity_nextButton)
         refreshBtnLinearLayout = findViewById(R.id.gameActivity_refreshBtn_linearLayout)
         refreshButtonWithText = findViewById(R.id.gameActivity_refreshButton_withText)
-
+        muteButton = findViewById(R.id.muteButton)
 
         var bundle: Bundle = intent.extras!!
         if(bundle != null) {
@@ -96,14 +107,55 @@ class MatchGameActivity : AppCompatActivity() {
         arFragment = supportFragmentManager.findFragmentById(R.id.arSceneViewId) as ArFragment
 
         initializeGame()
-
+        initializeAudio()
         // Operation buttons
 
         refreshButton.setOnClickListener {
             finish()
             startActivity(intent)
         }
+        muteButton.setOnClickListener { toggleMute() }
 
+    }
+
+
+    private fun initializeAudio() {
+        correctSound = MediaPlayer.create(this, R.raw.correct_sound)
+        wrongSound = MediaPlayer.create(this, R.raw.wrong_sound)
+        tts = TextToSpeech(this) { status -> isTtsReady = status == TextToSpeech.SUCCESS }
+    }
+
+
+    private fun playCorrectFeedback() {
+        if (!isMuted) {
+            correctSound.start()
+            if (isTtsReady) tts.speak("Correct! Great job!", TextToSpeech.QUEUE_FLUSH, null, null)
+        }
+    }
+
+    private fun playWrongFeedback() {
+        if (!isMuted) {
+            wrongSound.start()
+            if (isTtsReady) tts.speak("Try again!", TextToSpeech.QUEUE_FLUSH, null, null)
+        }
+    }
+
+    private fun playTapSound() {
+        if (!isMuted) {
+            MediaPlayer.create(this, R.raw.tap_sound).apply {
+                start()
+                setOnCompletionListener { release() }
+            }
+        }
+    }
+
+    private fun toggleMute() {
+        isMuted = !isMuted
+        muteButton.setImageResource(
+            if (isMuted) R.drawable.ic_volume_off
+            else android.R.drawable.ic_lock_silent_mode_off
+        )
+        if (!isMuted) playTapSound()
     }
 
     // ----------------------------------------------------------------------------------------------
@@ -251,6 +303,8 @@ class MatchGameActivity : AppCompatActivity() {
 
     // Number and operation selection===================================
     private fun onNumberSelected(number: String, noid: Int) {
+        playTapSound()
+
         if (currentResult == null ) {
             currentResult= number
             currentResultNo= noid
@@ -264,9 +318,13 @@ class MatchGameActivity : AppCompatActivity() {
              }
 
         else if(currentResult == number && noid != currentResultNo  ){
+            playCorrectFeedback()
+
             onGameOver(true) // Target reached
 
         }else if (currentResult != number) {
+            playWrongFeedback()
+
             onGameOver(false) // Target reached
         }
         /*
@@ -377,6 +435,14 @@ class MatchGameActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        correctSound.release()
+        wrongSound.release()
+        tts.shutdown()
+    }
+
 
     private fun unlockNextTarget(userId: String, completedTarget: Int) {
         val nextTarget = completedTarget + 1
