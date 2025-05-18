@@ -34,11 +34,14 @@
     <string name="easy_level">Kolay Seviye</string>
     <string name="medium_level">Orta Seviye</string>
     <string name="hard_level">Zor Seviye</string>
-    <string name="ar_sum_game">Toplama Oyunu</string>
+    <string name="ar_sum_game">Matematik Oyunu</string>
+    <string name="Discover_game">Dünya Keşfet</string>
 
     <string name="pick_levels">Seviyenizi seçin ve eğlence başlasın!</string>
     <string name="hello_fullname">Merhaba ... 👋</string>
     <string name="main_activity_description">ARitmatikA\'ya hoş geldin! 🪄 Sayılarla dolu süper eğlenceli bir yolculuk başlıyor! 🧮 Haydi, oyunlarla öğrenelim ve harikalar yaratalım! 📚</string>
+    <string name="discover_activity_description">Merhaba ... Kaşif! Bu oyunda ünlü yerleri keşfet! 🗺️ Harika binalar ve tarih hakkındaki soruları doğru 3D modeli seçerek yanıtla. Eğlenceli öğrenme seni bekliyor! 🤓</string>
+
     <string name="settingsActivity_App_language">Uygulama Dili</string>
     <string name="settingsActivity_Suggestions">Önerilerinizi bize iletin</string>
     <string name="settingsActivity_Developed_by">Geliştiren</string>
@@ -71,5 +74,5 @@
     <string name="bottomSheetLayoutOfLanguages_Application_language">Uygulama dili</string>
     <string name="bottomSheetLayoutOfLanguages_English">İngilizce</string>
     <string name="bottomSheetLayoutOfLanguages_Turkish">Türkçe</string>
-    <string name="ar_match_game">Match Game</string>
+    <string name="ar_match_game">Eşleştirme Oyunu</string>
 </resources>

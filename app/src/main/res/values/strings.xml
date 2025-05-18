@@ -32,12 +32,16 @@
     <string name="forgot_password_title">Oops! Forgot something?</string>
     <string name="settings">Settings</string>
     <string name="easy_level">Easy Level</string>
+    <string name="Discover_game">Discover The World</string>
+
     <string name="medium_level">Medium Level</string>
     <string name="hard_level">Hard Level</string>
     <string name="ar_sum_game">Math Game</string>
     <string name="pick_levels">Pick your level and start the fun!</string>
     <string name="hello_fullname">Hello ... 👋</string>
     <string name="main_activity_description">Welcome to the amazing world of Math AR! 🪄 \n Let\'s learn with numbers 🧮 and shapes 📚 together! </string>
+    <string name="discover_activity_description">Hey Explorer! Ready for a global adventure? 🌍 Embark on a quest to "Discover the World"! Explore famous landmarks and ancient wonders. Can you pick the right 3D model to answer the questions and become a history explorer? Let\'s go! ✨ </string>
+
     <string name="settingsActivity_App_language">App language</string>
     <string name="settingsActivity_Suggestions">Give us your suggestions</string>
     <string name="settingsActivity_Developed_by">Developed by</string>
