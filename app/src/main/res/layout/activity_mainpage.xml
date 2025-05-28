@@ -44,10 +44,13 @@
             android:layout_marginBottom="20dp">
 
             <LinearLayout
+                android:id="@+id/mainAc"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:baselineAligned="false"
                 android:orientation="vertical">
+
 
                 <TextView
                     android:id="@+id/mainActivity_fullnameId"
@@ -179,14 +182,16 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:baselineAligned="false"
+                android:baselineAligned="true"
                 android:layout_marginTop="270dp"
                 android:orientation="horizontal">
 
                 <RelativeLayout
+
                     android:id="@+id/Discover_game_relativelayoutId"
                     android:layout_width="0dp"
                     android:layout_height="255dp"
@@ -199,9 +204,9 @@
                         android:id="@+id/Discover_game"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="23dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_alignParentStart="true"
                         android:background="@drawable/background_levels"
                         android:backgroundTint="#7A63AF">
 
@@ -217,13 +222,53 @@
                             android:textSize="40sp" />
                     </RelativeLayout>
 
+
+
                     <ImageView
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:foregroundGravity="center"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
                         android:layout_alignParentTop="true"
                         android:layout_marginRight="10dp"
+                        android:foregroundGravity="center"
                         android:src="@drawable/giraffe_virtual_reality_headset" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/zom_game_relativelayoutId"
+
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="0dp"
+                    android:layout_height="255dp"
+                    android:layout_below="@id/mainActivity_mediumLevel_relativelayoutId"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="193dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    >
+
+                    <RelativeLayout
+                        android:id="@+id/zombie_game"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_alignParentStart="true"
+                        android:background="@drawable/background_levels"
+                        android:backgroundTint="#05B4A3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/teko_semibold"
+                            android:text="Zombie Game"
+                            android:textColor="@color/black"
+                            android:textSize="40sp" />
+                    </RelativeLayout>
+
 
                 </RelativeLayout>
 
@@ -231,7 +276,9 @@
             </LinearLayout>
 
 
+
         </RelativeLayout>
+
     </ScrollView>
 
 </RelativeLayout>

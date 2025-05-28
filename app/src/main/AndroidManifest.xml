@@ -36,6 +36,9 @@
         <activity
             android:name=".GameActivity"
             android:exported="false" />
+        <activity
+            android:name=".ZombieActivity"
+            android:exported="false" />
         <activity android:name=".MatchMainActivity"
             android:exported="false" />
         <activity android:name=".MatchLvl1Activity"
