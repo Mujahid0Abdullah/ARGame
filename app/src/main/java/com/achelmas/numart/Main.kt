@@ -32,6 +32,7 @@ class Main : AppCompatActivity(){
     private lateinit var SumGameBtn : RelativeLayout
     private lateinit var MatchGameBtn : RelativeLayout
     private lateinit var DiscGameBtn : RelativeLayout
+    private lateinit var zomGameBtn : RelativeLayout
 
     private lateinit var fullName: String
     private lateinit var fullNameTxtView: TextView
@@ -51,6 +52,7 @@ class Main : AppCompatActivity(){
         toolbar = findViewById(R.id.mainActivity_toolBarId)
         SumGameBtn = findViewById(R.id.sum_game)
         DiscGameBtn = findViewById(R.id.Discover_game)
+        zomGameBtn   = findViewById(R.id.zombie_game)
 
         MatchGameBtn = findViewById(R.id.match_game)
         fullNameTxtView = findViewById(R.id.mainActivity_fullnameId)
@@ -65,6 +67,13 @@ class Main : AppCompatActivity(){
         }
         DiscGameBtn.setOnClickListener {
             var intent = Intent(baseContext , DiscoverLvlActivity::class.java)
+            startActivity(intent)
+
+
+
+        }
+        zomGameBtn.setOnClickListener {
+            var intent = Intent(baseContext , ZombieActivity::class.java)
             startActivity(intent)
 
 
