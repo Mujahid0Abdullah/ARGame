@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator
 import android.animation.AnimatorSet
 import android.content.Intent
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -31,13 +32,15 @@ import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import android.net.Uri
 import android.speech.tts.TextToSpeech
+import android.widget.ImageButton
 import java.util.Locale
 
 
 class DiscoverGameActivity : AppCompatActivity() {
 
     private lateinit var tts: TextToSpeech
-
+    private lateinit var correctSound: MediaPlayer
+    private lateinit var wrongSound: MediaPlayer
     private lateinit var refreshButton: CardView
     private lateinit var expressionView: TextView
     private lateinit var targetView: TextView
@@ -58,7 +61,9 @@ class DiscoverGameActivity : AppCompatActivity() {
     private var usedNumbers = mutableSetOf<String?>()
     private val history = StringBuilder()
     private lateinit var arFragment: ArFragment
-
+    private lateinit var muteButton: ImageButton
+    private var isTtsReady = false
+    private var isMuted = false
     // private lateinit var sceneView: ArSceneView
     private lateinit var konfettiView: KonfettiView
 
@@ -87,7 +92,7 @@ class DiscoverGameActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.gameActivity_nextButton)
         refreshBtnLinearLayout = findViewById(R.id.gameActivity_refreshBtn_linearLayout)
         refreshButtonWithText = findViewById(R.id.gameActivity_refreshButton_withText)
-
+        muteButton = findViewById(R.id.muteButton)
 
         var bundle: Bundle = intent.extras!!
         if(bundle != null) {
@@ -103,12 +108,15 @@ class DiscoverGameActivity : AppCompatActivity() {
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 val languageCode = LanguageManager.loadSelectedLanguage(this)
+
                 val locale = when (languageCode) {
                     "tr" -> Locale("tr", "TR")
                     "en" -> Locale.US
                     else -> Locale.US
                 }
                 val result = tts.setLanguage(locale)
+                Log.d("TAG", result.toString()+"lang in stsate "+languageCode)
+
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                     Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
                 } else {
@@ -122,6 +130,7 @@ class DiscoverGameActivity : AppCompatActivity() {
         arFragment = supportFragmentManager.findFragmentById(R.id.arSceneViewId) as ArFragment
 
         initializeGame()
+        initializeAudio()
 
         // Operation buttons
 
@@ -132,6 +141,9 @@ class DiscoverGameActivity : AppCompatActivity() {
         expressionView.setOnClickListener {
             question?.let { speak(it) }
         }
+
+        muteButton.setOnClickListener { toggleMute() }
+
 
     }
     private fun speak(text: String) {
@@ -264,6 +276,7 @@ class DiscoverGameActivity : AppCompatActivity() {
     private fun onNumberSelected(number: String, noid: Int) {
         if (number == target ) {
             Log.d("TAG", "true")
+            playCorrectFeedback()
 
             Toast.makeText(this, "you selected ${number}", Toast.LENGTH_SHORT).show()
 //            expressionView.text = number
@@ -275,13 +288,48 @@ class DiscoverGameActivity : AppCompatActivity() {
 
         else  {
             Log.d("TAG", "false "+number+" "+target)
+            playWrongFeedback()
 
             onGameOver(false) // Target reached
         }
 
     }
 
+    private fun initializeAudio() {
+        correctSound = MediaPlayer.create(this, R.raw.correct_sound)
+        wrongSound = MediaPlayer.create(this, R.raw.wrong_sound)
+    }
 
+
+    private fun playCorrectFeedback() {
+        if (!isMuted) {
+            correctSound.start()
+        }
+    }
+
+    private fun playWrongFeedback() {
+        if (!isMuted) {
+            wrongSound.start()
+        }
+    }
+
+    private fun playTapSound() {
+        if (!isMuted) {
+            MediaPlayer.create(this, R.raw.tap_sound).apply {
+                start()
+                setOnCompletionListener { release() }
+            }
+        }
+    }
+
+    private fun toggleMute() {
+        isMuted = !isMuted
+        muteButton.setImageResource(
+            if (isMuted) R.drawable.ic_volume_off
+            else android.R.drawable.ic_lock_silent_mode_off
+        )
+        if (!isMuted) playTapSound()
+    }
 
     //GAME OVER -----------------------------------------------
     private fun onGameOver(isSuccess: Boolean) {
@@ -302,16 +350,17 @@ class DiscoverGameActivity : AppCompatActivity() {
                 // Konfetti animasyonu başlat
                 startKonfetti()
             }
-
+            unlockNextTarget(FirebaseAuth.getInstance().currentUser!!.uid, targetNumber)
             nextButton.setOnClickListener {
                 val intent = Intent(this, DiscoverLvlActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                startActivity(intent)
+
                 finish()
+                startActivity(intent)
             }
 
             // Unlock next target when current target is reached
-            unlockNextTarget(FirebaseAuth.getInstance().currentUser!!.uid, targetNumber)
+
         }
         else {
             targetView.setTextColor(Color.RED)

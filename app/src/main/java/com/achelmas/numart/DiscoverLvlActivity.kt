@@ -67,61 +67,69 @@ class DiscoverLvlActivity :AppCompatActivity() {
         getFullNameProcess()
         getDataFromFirebase()
     }
+    override fun onResume() {
+        super.onResume()
+        getDataFromFirebase()
+    }
 
     private fun getDataFromFirebase() {
         discoverList = ArrayList()
         myReference = FirebaseDatabase.getInstance().reference
 
         val userId = mAuth!!.currentUser!!.uid
-        val userProgressRef = myReference.child("UserProgress").child(userId).child("DiscoverEasyLevel")
-        val targetsRef = myReference.child("Dicover game")
+        val userRef = myReference.child("Users").child(userId)
 
-        // Kullanıcı ilerlemesini ve hedefleri paralel olarak çek
-        userProgressRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(userProgressSnapshot: DataSnapshot) {
-                targetsRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(targetsSnapshot: DataSnapshot) {
-                        Log.d(targetsSnapshot.children.toString(),"firebase")
-                        Log.d(userProgressSnapshot.value.toString(),"firebase")
-                        Log.d("TAG", userProgressRef.toString()+ "giiilşilşili "+Locale.getDefault().language)
+        // Kullanıcının yaşını al
+        userRef.child("age").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(ageSnapshot: DataSnapshot) {
+                val userAgeStr = ageSnapshot.getValue(String::class.java) ?: "10"
+                val userAge = userAgeStr.toIntOrNull() ?: 10
 
-                        for (snapshot: DataSnapshot in targetsSnapshot.children) {
-                            val model = ModelOfDiscover()
-                            val questionMap = mutableMapOf<String, String>()
-                            val questionSnapshot = snapshot.child("Question")
-                            for (lang in questionSnapshot.children) {
-                                val langCode = lang.key ?: continue
-                                val text = lang.getValue(String::class.java) ?: continue
-                                questionMap[langCode] = text
+                // Yaşa göre hedef dataset’i belirle
+                val datasetName = if (userAge > 10) "DiscoverHardLevel" else "Dicover game"
+                val userProgressRef = myReference.child("UserProgress").child(userId).child("DiscoverEasyLevel") // İsteğe göre "DiscoverHardLevel" için ayrı da yapılabilir
+                val targetsRef = myReference.child(datasetName)
+
+                userProgressRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(userProgressSnapshot: DataSnapshot) {
+                        targetsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(targetsSnapshot: DataSnapshot) {
+                                for (snapshot: DataSnapshot in targetsSnapshot.children) {
+                                    val model = ModelOfDiscover()
+                                    val questionMap = mutableMapOf<String, String>()
+                                    val questionSnapshot = snapshot.child("Question")
+                                    for (lang in questionSnapshot.children) {
+                                        val langCode = lang.key ?: continue
+                                        val text = lang.getValue(String::class.java) ?: continue
+                                        questionMap[langCode] = text
+                                    }
+                                    model.question = questionMap
+                                    model.target = snapshot.child("Target").value.toString()
+                                    model.targetNumber = snapshot.child("Target Number").value.toString()
+                                    model.shape1 = snapshot.child("shape1").value.toString()
+                                    model.shape2 = snapshot.child("shape2").value.toString()
+                                    model.shape3 = snapshot.child("shape3").value.toString()
+                                    model.shape4 = snapshot.child("shape4").value.toString()
+
+                                    model.isUnlocked = userProgressSnapshot.child(model.targetNumber).value == true || model.targetNumber == "1"
+                                    discoverList.add(model)
+                                }
+
+                                adapter = AdapterOfDiscover(this@DiscoverLvlActivity, discoverList)
+                                recyclerView.adapter = adapter
+                                adapter.notifyDataSetChanged()
                             }
-                            model.question = questionMap
-                            model.target = snapshot.child("Target").value.toString()
-
-                            model.targetNumber = snapshot.child("Target Number").value.toString()
-                            model.shape1 = snapshot.child("shape1").value.toString()
-                            model.shape2 = snapshot.child("shape2").value.toString()
-                            model.shape3 = snapshot.child("shape3").value.toString()
-                            model.shape4 = snapshot.child("shape4").value.toString()
-
-                            // İlk hedef her zaman açık olacak
-                            model.isUnlocked = userProgressSnapshot.child(model.targetNumber).value == true || model.targetNumber == "1"
-                            discoverList.add(model)
-                            Log.d("TAG", "isunlocked: ${model.isUnlocked}")
-
-                            Log.d("TAG", "Target: ${model.target}, Target Number: ${model.targetNumber}, Numbers: ${model.shape1}, ${model.shape2}, ${model.shape3}, ${model.shape4}")
-
-                        }
-
-                        adapter = AdapterOfDiscover(this@DiscoverLvlActivity, discoverList)
-                        recyclerView.adapter = adapter
-                        adapter.notifyDataSetChanged()
+                            override fun onCancelled(error: DatabaseError) {}
+                        })
                     }
                     override fun onCancelled(error: DatabaseError) {}
                 })
             }
+
             override fun onCancelled(error: DatabaseError) {}
         })
     }
+
 
     private fun getFullNameProcess() {
 
