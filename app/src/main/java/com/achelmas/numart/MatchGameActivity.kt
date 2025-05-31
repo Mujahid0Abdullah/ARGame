@@ -175,7 +175,7 @@ class MatchGameActivity : AppCompatActivity() {
                     this.renderable = renderable
                     this.worldPosition = position // Position of the model in AR space
                     // Adjust the scale of the 3D model
-                    this.worldScale = Vector3(1.25f, 1.25f, 1.25f)
+                    this.worldScale = Vector3(0.35f, 0.35f, 0.35f)
                 }
 
                 arFragment.arSceneView.scene.addChild(node)
@@ -196,12 +196,12 @@ class MatchGameActivity : AppCompatActivity() {
     private fun addNumberButtons() {
         // Modellerin farklı pozisyonlara yerleştirilmesi (x, y, z ekseninde farklılık)
         val positions = listOf(
-            Vector3(0.0f, -0.5f, -0.5f), // Left
-                    Vector3(0.2f, -0.5f, -1.0f), // Right
-        Vector3(-0.5f, -0.5f, -1.0f), // Front left
-        Vector3(-0.2f, -0.5f, -0.7f), // Front right
-        Vector3(-0.1f, -0.5f, -1.0f), // Far left
-        Vector3(0.5f, -0.5f, -0.5f) // Center
+            Vector3(-0.5f, -0.5f, -0.9f),  // Row 1, Col 1
+            Vector3(1f, -0.5f, -0.9f),   // Row 1, Col 2
+            Vector3(0.5f, -0.5f, -0.9f),   // Row 1, Col 3
+
+            Vector3(0f, 0.5f, -1.0f),  // Row 2, Col 1
+
 
 
         )
@@ -210,7 +210,7 @@ class MatchGameActivity : AppCompatActivity() {
         for (i in gameNumbers.indices) {
             val shape = gameNumbers[i]
             val modelPath = "models/$shape.glb"
-            val position = positions.getOrNull(i) ?: Vector3(x, -0.3f, -0.5f)
+            val position = positions.getOrNull(i) ?: Vector3(x, 0f, 0f)
             x += 0.1f
             add3DNumberButton(
                 modelUri = modelPath,
