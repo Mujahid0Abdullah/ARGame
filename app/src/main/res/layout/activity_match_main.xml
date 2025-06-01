@@ -46,6 +46,8 @@
                     android:text="@string/hello_fullname"
                     android:textColor="@color/black"
                     android:gravity="center"
+                    android:visibility="gone"
+
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_width="match_parent"
@@ -70,6 +72,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
+                     android:visibility="gone"
+
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="15dp"
                     android:layout_width="match_parent"
@@ -122,6 +126,8 @@
                     android:layout_height="125dp"
                     android:layout_below="@id/mainActivity_easyLevel_relativelayoutId"
                     android:layout_marginLeft="5dp"
+                    android:visibility="gone"
+
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="5dp">
 
@@ -160,6 +166,8 @@
                     android:layout_below="@id/mainActivity_mediumLevel_relativelayoutId"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="5dp"
+                    android:visibility="gone"
+
                     android:layout_marginRight="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="125dp">
