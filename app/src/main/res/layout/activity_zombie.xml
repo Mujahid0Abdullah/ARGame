@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/gameActivity_starView"
-                    android:src="@drawable/star_icon"
+                    android:src="@drawable/subtraction_icon"
                     android:layout_width="280dp"
                     android:layout_marginBottom="-23dp"
                     android:layout_marginTop="4dp"
@@ -204,8 +204,8 @@
                 android:focusable="true"
                 android:layout_gravity="center"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="#7FAF704C"
-                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="#30FFFEFE"
+                app:cardCornerRadius="1dp"
                 app:cardElevation="0dp">
 
 

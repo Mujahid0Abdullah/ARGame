@@ -68,6 +68,7 @@ class DiscoverGameActivity : AppCompatActivity() {
     private lateinit var konfettiView: KonfettiView
 
     // Numbers
+    private var isGameOver = false
 
     private var shape1: String? = null
     private var shape2: String? = null
@@ -170,7 +171,7 @@ class DiscoverGameActivity : AppCompatActivity() {
                     this.renderable = renderable
                     this.worldPosition = position // Position of the model in AR space
                     // Adjust the scale of the 3D model
-                    this.worldScale = Vector3(1.25f, 1.25f, 1.25f)
+                    this.worldScale = Vector3(3.0f, 3.0f, 3.0f)
                 }
 
                 arFragment.arSceneView.scene.addChild(node)
@@ -191,10 +192,10 @@ class DiscoverGameActivity : AppCompatActivity() {
     private fun addNumberButtons() {
         // Modellerin farklı pozisyonlara yerleştirilmesi (x, y, z ekseninde farklılık)
         val positions = listOf(
-            Vector3(0.0f, -0.5f, -0.5f), // Left
+            Vector3(0.2f, -0.5f, -0.5f), // Left
                     Vector3(0.2f, -0.5f, -1.0f), // Right
         Vector3(-0.5f, -0.5f, -1.0f), // Front left
-        Vector3(-0.2f, -0.5f, -0.7f), // Front right
+        Vector3(-0.3f, -0.5f, -0.7f), // Front right
         Vector3(-0.1f, -0.5f, -1.0f), // Far left
         Vector3(0.5f, -0.5f, -0.5f) // Center
 
@@ -274,6 +275,8 @@ class DiscoverGameActivity : AppCompatActivity() {
 
     // Number and operation selection===================================
     private fun onNumberSelected(number: String, noid: Int) {
+        if (isGameOver) return // Ignore taps after game over
+
         if (number == target ) {
             Log.d("TAG", "true")
             playCorrectFeedback()
@@ -334,6 +337,7 @@ class DiscoverGameActivity : AppCompatActivity() {
     //GAME OVER -----------------------------------------------
     private fun onGameOver(isSuccess: Boolean) {
         // Visibility of buttons
+        isGameOver = true
 
         refreshButton.visibility = View.GONE
 
@@ -492,7 +496,21 @@ class DiscoverGameActivity : AppCompatActivity() {
         handler.post(animationRunnable)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        try { correctSound.release() } catch (_: Exception) {}
+        try { wrongSound.release() } catch (_: Exception) {}
+        // Shutdown TTS if initialized
+        try { tts.shutdown() } catch (_: Exception) {}
+        // Remove any handlers if used
 
+        // Example for MediaPlayer
+
+    }
+    override fun onBackPressed() {
+        super.onBackPressed() // or use
+        finish()
+    }
 
 
 }
