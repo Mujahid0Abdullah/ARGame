@@ -2,20 +2,46 @@
       <h1> 
             <img src="./app/src/main/res/drawable/logo.png" width="165px">
             <br/>
-           🎓 ARitmatikA - Artırılmış Gerçeklik Destekli Mobil Eğitim Oyunu
+           <h1>Arithmatika</h1> 
+            Artırılmış Gerçeklik Destekli Mobil Eğitim Oyunu
             <br/> 
       </h1>
 </div>
-
-<div align="center"> <img src="./app/src/main/res/drawable/logo.png" width="165px" alt="Arithmatika Logo"/> <h1>Arithmatika</h1> <h4> 🌟 Mujahid Alabdullah - 200541605 🌟 </h4> <h4> 📄 <a href="https://docs.google.com/document/d/1ubI3OFqzkjR_8TAjsisP0jeOMxRGo8e3/edit?usp=sharing">Proje Dökümanı (SWOT, MARS, THS, UMLS, SAD dahil)</a> </h4> <h4> 🌐 <a href="https://mujahid0abdullah.github.io/ARGameView/">Landing Page</a> </h4> </div>
+<div align="center">
+ <h4> 🌟 Mujahid Alabdullah - 200541605 🌟 </h4> <h4> 📄 <a href="https://docs.google.com/document/d/1ubI3OFqzkjR_8TAjsisP0jeOMxRGo8e3/edit?usp=sharing">Proje Dökümanı (SWOT, MARS, THS, UMLS, SAD dahil)</a> </h4> <h4> 🌐 <a href="https://mujahid0abdullah.github.io/ARGameView/">Landing Page</a> </h4> </div>
 
    <br/> 
-            <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/7.jpg" width="265px">
-              <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/8.jpg" width="265px">
-                <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/9.jpg" width="265px">
-                  <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/10.jpg" width="265px">
-                    <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/11.jpg" width="265px">
-           <img style="display: inline-block;" src="https://mujahid0abdullah.github.io/ARGameView/assets/img/20.jpg" width="265px">
+      <p align="center">
+  <img src="https://mujahid0abdullah.github.io/ARGameView/assets/img/18.jpg" alt="Keşfetme Oyunu -nyc" width="45%" style="margin-right:10px;"/>
+  <img src="https://mujahid0abdullah.github.io/ARGameView/assets/img/10.jpg" alt="Keşfetme Oyunu " width="45%"/>
+</p>
+<p align="center">
+  <em>Keşfetme Oyunun Sorusu</em> &emsp;&emsp;&emsp;&emsp;&emsp; <em>Keşfetme Oyunu</em>
+</p>
+
+<p align="center">
+  <img src="https://mujahid0abdullah.github.io/ARGameView/assets/img/11.jpg" alt="Zombi Oyunu" width="45%" style="margin-right:10px;"/>
+  <img src="https://mujahid0abdullah.github.io/ARGameView/assets/img/17.jpg" alt="Kayıt Olma Ekranı" width="45%"/>
+</p>
+<p align="center">
+  <em>Zombi Oyunu</em> &emsp;&emsp;&emsp;&emsp;&emsp; <em>Kayıt Olma Ekranı</em>
+</p>
+
+<p align="center">
+  <img src="https://mujahid0abdullah.github.io/ARGameView/assets/img/7.jpg" alt="Ana Menü" width="45%" style="margin-right:10px;"/>
+  <img src="https://mujahid0abdullah.github.io/ARGameView/assets/img/20.jpg" alt=" Ayarlar" width="45%"/>
+</p>
+<p align="center">
+  <em>Ana Menü</em> &emsp;&emsp;&emsp;&emsp;&emsp; <em> Ayarlar</em>
+</p>
+
+<p align="center">
+  <img src="https://mujahid0abdullah.github.io/ARGameView/assets/img/9.jpg" alt="Math oyunları" width="45%" style="margin-right:10px;"/>
+   <img src="https://mujahid0abdullah.github.io/ARGameView/assets/img/8.jpg" alt="Eşleştirme Oyunu Başlangıç" width="45%" style="margin-right:10px;"/>
+<p align="center">
+  <em>Matemetik kolay seviyenin Soruları</em> &emsp;&emsp;&emsp;&emsp;&emsp; <em>Eşleştirme Oyunu Başlangıç</em>
+</p>
+
 
    <br/> 
 
