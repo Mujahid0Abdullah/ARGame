@@ -65,7 +65,7 @@ class DiscoverLvlActivity :AppCompatActivity() {
         }
         // get fullname from firebase
         getFullNameProcess()
-        getDataFromFirebase()
+       // getDataFromFirebase()
     }
     override fun onResume() {
         super.onResume()
@@ -210,7 +210,16 @@ class DiscoverLvlActivity :AppCompatActivity() {
                             "7" to false,
                             "9" to false,
                             "10" to false,
-                            "11" to false
+                            "11" to false,
+                            "12" to false,
+                            "13" to false,
+                            "14" to false,
+                            "15" to false,
+                            "16" to false,
+                            "17" to false,
+                            "18" to false,
+                            "19" to false,
+                            "20" to false
                         )
                     )
 
