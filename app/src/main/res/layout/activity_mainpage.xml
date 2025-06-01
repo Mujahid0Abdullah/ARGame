@@ -113,7 +113,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="23dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="6dp"
                         android:background="@drawable/background_levels"
                         android:backgroundTint="#FFAB91">
 
@@ -121,7 +121,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginHorizontal="4dp"
+                            android:layout_marginStart="6dp"
                             android:layout_marginBottom="17dp"
                             android:fontFamily="@font/teko_semibold"
                             android:text="@string/ar_sum_game"
@@ -214,7 +214,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/teko_semibold"
                             android:text="@string/Discover_game"
@@ -261,14 +261,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/teko_semibold"
-                            android:text="Zombie Game"
+                            android:text="@string/zombie_game"
                             android:textColor="@color/black"
                             android:textSize="40sp" />
                     </RelativeLayout>
-
+                    <ImageView
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/zombie_icon" />
 
                 </RelativeLayout>
 

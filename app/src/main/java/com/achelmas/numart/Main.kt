@@ -7,10 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.achelmas.numart.hardLevelMVC.HardLevelActivity
 import android.util.Log
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -25,7 +28,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import org.json.JSONObject
 
-
+object NetworkUtils {
+    fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+}
 class Main : AppCompatActivity(){
     private lateinit var toolbar: Toolbar
 
@@ -59,16 +69,25 @@ class Main : AppCompatActivity(){
 
 
         SumGameBtn.setOnClickListener {
-            var intent = Intent(baseContext , MainActivity::class.java)
-            startActivity(intent)
 
+
+            if (NetworkUtils.isNetworkAvailable(this)) {
+                val intent = Intent(baseContext, MainActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show()
+            }
 
 
         }
         DiscGameBtn.setOnClickListener {
-            var intent = Intent(baseContext , DiscoverLvlActivity::class.java)
-            startActivity(intent)
 
+            if (NetworkUtils.isNetworkAvailable(this)) {
+                val intent = Intent(baseContext, DiscoverLvlActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show()
+            }
 
 
         }
@@ -92,9 +111,13 @@ class Main : AppCompatActivity(){
         getFullNameProcess()
 
         MatchGameBtn.setOnClickListener {
-            var intent = Intent(baseContext , MatchMainActivity::class.java)
-            startActivity(intent)
 
+            if (NetworkUtils.isNetworkAvailable(this)) {
+                val intent = Intent(baseContext, MatchMainActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show()
+            }
 
 
         }
