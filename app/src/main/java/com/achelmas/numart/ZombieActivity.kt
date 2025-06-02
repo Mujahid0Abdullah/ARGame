@@ -33,15 +33,20 @@ class ZombieActivity : AppCompatActivity() {
     private var score = 0
     private var lives = 3
     private var isGameStarted = false
-
+    private lateinit var loseHeartPlayer: MediaPlayer
+    private lateinit var zombieGrowlPlayer: MediaPlayer
+    private val growledZombies = mutableSetOf<Node>()
     private val handler = Handler()
     private val zombies = mutableListOf<Node>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zombie)
-        gunPlayer = MediaPlayer.create(this, R.raw.gun_shot)
-        deathPlayer = MediaPlayer.create(this, R.raw.zombie_death)
+        gunPlayer = MediaPlayer.create(this, R.raw.gun_shot_ak)
+        deathPlayer = MediaPlayer.create(this, R.raw.zombie_death_smashed)
+        loseHeartPlayer = MediaPlayer.create(this, R.raw.lose_heart)
+        zombieGrowlPlayer = MediaPlayer.create(this, R.raw.zombie_death)
+
         arFragment = supportFragmentManager.findFragmentById(R.id.arSceneViewId) as ArFragment
         scoreTextView = findViewById(R.id.gameActivity_expressionView)
         livesTextView = findViewById(R.id.gameActivity_targetView)
@@ -62,6 +67,14 @@ class ZombieActivity : AppCompatActivity() {
 
             playGunSound() // 🔫 Kullanıcının dokunduğu anda ses çal
         }
+    }
+    private fun playZombieGrowl() {
+        zombieGrowlPlayer.seekTo(0)
+        zombieGrowlPlayer.start()
+    }
+    private fun playLoseHeartSound() {
+        loseHeartPlayer.seekTo(0)
+        loseHeartPlayer.start()
     }
     private fun playGunSound() {
         gunPlayer.seekTo(0)
@@ -95,14 +108,25 @@ class ZombieActivity : AppCompatActivity() {
         if (zombies.size >= 5) return
         val anchorNode = AnchorNode(hitResult.createAnchor())
         anchorNode.setParent(arFragment.arSceneView.scene)
-
+        val randomX: Float
+        val pickFirstRange = Random.nextBoolean()
+        if (pickFirstRange) {
+            // Generates a random float in the range [-3.0, -2.0)
+            // Random.nextFloat() produces [0.0, 1.0)
+            // So, -3.0f + [0.0, 1.0) gives [-3.0, -2.0)
+            randomX = -3.0f + Random.nextFloat()
+        } else {
+            // Generates a random float in the range [2.0, 3.0)
+            // So, 2.0f + [0.0, 1.0) gives [2.0, 3.0)
+            randomX = 2.0f + Random.nextFloat()
+        }
         val zombieNode = Node().apply {
             setParent(anchorNode)
             worldScale = Vector3(0.5f, 0.5f, 0.5f)
             renderable = zombieRenderable
 
             localPosition = Vector3(
-                Random.nextFloat() * 2f - 1f,
+                randomX,
                 0f,
                 Random.nextFloat() * -2f - 1f
             )
@@ -148,11 +172,17 @@ class ZombieActivity : AppCompatActivity() {
                 zombie.worldPosition = Vector3.add(zombiePos, direction.scaled(speed))
 
                 val distance = Vector3.subtract(playerPos, zombie.worldPosition).length()
-                if (distance < 0.2f) {
+                if (distance < 0.8f && !growledZombies.contains(zombie)) {
+                    playZombieGrowl()
+                    growledZombies.add(zombie)
+                }
+                if (distance < 0.4f) {
                     // Player touched
                     zombies.remove(zombie)
                     arFragment.arSceneView.scene.removeChild(zombie.parent as? Node)
                     lives--
+                    playLoseHeartSound() // <-- Play sound here
+
                     updateUI()
                     if (lives <= 0) {
                         Toast.makeText(this@ZombieActivity, "Game Over!", Toast.LENGTH_LONG).show()
@@ -194,6 +224,8 @@ class ZombieActivity : AppCompatActivity() {
         super.onDestroy()
         gunPlayer.release()
         deathPlayer.release()
+        loseHeartPlayer.release()
+        zombieGrowlPlayer.release()
         handler.removeCallbacksAndMessages(null) // cleanup
 
     }
