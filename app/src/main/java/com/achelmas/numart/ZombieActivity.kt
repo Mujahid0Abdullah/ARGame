@@ -20,8 +20,10 @@ import com.google.ar.sceneform.ux.ArFragment
 import kotlin.random.Random
 import android.media.MediaPlayer
 import android.view.MotionEvent
+import androidx.cardview.widget.CardView
 
 class ZombieActivity : AppCompatActivity() {
+    private lateinit var refreshButton: CardView
 
     private lateinit var arFragment: ArFragment
     private lateinit var startButton: Button
@@ -33,6 +35,7 @@ class ZombieActivity : AppCompatActivity() {
     private var score = 0
     private var lives = 3
     private var isGameStarted = false
+    private var hitlast: HitResult? = null
     private lateinit var loseHeartPlayer: MediaPlayer
     private lateinit var zombieGrowlPlayer: MediaPlayer
     private val growledZombies = mutableSetOf<Node>()
@@ -46,12 +49,16 @@ class ZombieActivity : AppCompatActivity() {
         deathPlayer = MediaPlayer.create(this, R.raw.zombie_death_smashed)
         loseHeartPlayer = MediaPlayer.create(this, R.raw.lose_heart)
         zombieGrowlPlayer = MediaPlayer.create(this, R.raw.zombie_death)
+        refreshButton = findViewById(R.id.gameActivity_refreshButton)
 
         arFragment = supportFragmentManager.findFragmentById(R.id.arSceneViewId) as ArFragment
         scoreTextView = findViewById(R.id.gameActivity_expressionView)
         livesTextView = findViewById(R.id.gameActivity_targetView)
         startButton = findViewById(R.id.startButton)
-
+        refreshButton.setOnClickListener {
+            finish()
+            startActivity(intent)
+        }
         loadZombieModel()
         updateUI()
 
@@ -103,6 +110,8 @@ class ZombieActivity : AppCompatActivity() {
     }
 
     private fun spawnZombie(hitResult: HitResult) {
+        Log.d("ZombieActivity", "load ${zombies.size} ZombieModel: ${hitResult.createAnchor()}")
+
 
         // ✅ Maksimum zombi sınırı
         if (zombies.size >= 5) return
@@ -120,15 +129,23 @@ class ZombieActivity : AppCompatActivity() {
             // So, 2.0f + [0.0, 1.0) gives [2.0, 3.0)
             randomX = 2.0f + Random.nextFloat()
         }
+
+        val angle = Random.nextFloat() * Math.PI // [0, π] for front half
+        val distance = 4f + Random.nextFloat() * 1f // [2, 4]
+        var x = (distance * Math.cos(angle)).toFloat()
+        var z = -(distance * Math.sin(angle)).toFloat()
+
+        x = x.coerceIn(-3f, 3f)
+        z = z.coerceIn(-4f, 0f)
         val zombieNode = Node().apply {
             setParent(anchorNode)
             worldScale = Vector3(0.5f, 0.5f, 0.5f)
             renderable = zombieRenderable
 
             localPosition = Vector3(
-                randomX,
+                x,
                 0f,
-                Random.nextFloat() * -2f - 1f
+                z
             )
 
 
@@ -166,7 +183,7 @@ class ZombieActivity : AppCompatActivity() {
 
                 val zombiePos = zombie.worldPosition
                 val direction = Vector3.subtract(playerPos, zombiePos).normalized()
-                val speed = 0.01f
+                val speed = 0.01f + (score / 2000f).coerceAtMost(0.06f)
                 val lookDirection = Vector3.subtract(playerPos, zombie.worldPosition)
                 zombie.worldRotation = com.google.ar.sceneform.math.Quaternion.lookRotation(lookDirection, Vector3.up())
                 zombie.worldPosition = Vector3.add(zombiePos, direction.scaled(speed))
@@ -185,6 +202,7 @@ class ZombieActivity : AppCompatActivity() {
 
                     updateUI()
                     if (lives <= 0) {
+                        removeAllZombies()
                         Toast.makeText(this@ZombieActivity, "Game Over!", Toast.LENGTH_LONG).show()
                         handler.removeCallbacksAndMessages(null) // ✅ tüm işlemleri durdur
 
@@ -195,6 +213,20 @@ class ZombieActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+    private fun removeAllZombies() {
+        Log.d("ZombieActivity", "ZombieModel: deleting all zombies")
+
+        for (zombie in zombies) {
+            val parentNode = zombie.parent as? Node
+            if (parentNode != null) {
+                arFragment.arSceneView.scene.removeChild(parentNode)
+            } else {
+                arFragment.arSceneView.scene.removeChild(zombie)
+            }
+        }
+        zombies.clear()
+        growledZombies.clear()
     }
 
     private fun startZombieSpawner() {
@@ -209,8 +241,13 @@ class ZombieActivity : AppCompatActivity() {
                             arFragment.arSceneView.height / 2f
                         )
                         val hit = hitResults.firstOrNull()
-                        if (hit != null) spawnZombie(hit)
-                    }
+                        if (hit != null) { hitlast = hit}
+
+                        Log.d("ZombieActivity", "Hit result: $hit")
+                        Log.d("ZombieActivity", "Hit result: $hitlast")
+                        if (hitlast != null) {
+                            spawnZombie(hitlast!!)
+                        }                    }
                     handler.postDelayed(this, 4000)
                 }
             }

@@ -58,7 +58,10 @@ class Main : AppCompatActivity(){
         // Set edge to edge
         setContentView(R.layout.activity_mainpage)
         mAuth = FirebaseAuth.getInstance()
-
+        val userId = mAuth!!.currentUser?.uid
+        if (userId != null) {
+            setInitialTargetProgress(userId)  // Kullanıcının ilerlemesini Firebase'e kaydeder
+        }
         toolbar = findViewById(R.id.mainActivity_toolBarId)
         SumGameBtn = findViewById(R.id.sum_game)
         DiscGameBtn = findViewById(R.id.Discover_game)
@@ -123,6 +126,66 @@ class Main : AppCompatActivity(){
         }
         myReference = FirebaseDatabase.getInstance().reference
 
+    }
+    fun setInitialTargetProgress(userId: String) {
+        val userProgressRef = FirebaseDatabase.getInstance().reference
+            .child("UserProgress")
+            .child(userId)
+
+        userProgressRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    val initialProgress = mapOf(
+                        "A1EasyLevel" to mapOf(
+                            "1" to true,
+                            "2" to false,
+                            "3" to false,
+                            "4" to false,
+                            "5" to false,
+                            "6" to false,
+                            "7" to false,
+                            "8" to false,
+                            "9" to false,
+                            "10" to false
+                        ),
+                        "A2MediumLevel" to mapOf(
+                            "11" to true,
+                            "12" to false,
+                            "13" to false,
+                            "14" to false,
+                            "15" to false,
+                            "16" to false,
+                            "17" to false,
+                            "18" to false,
+                            "19" to false,
+                            "20" to false
+                        ),
+                        "A3HardLevel" to mapOf(
+                            "1" to false,
+                            "2" to false,
+                            "3" to false,
+                            "4" to false,
+                            "5" to false,
+                            "6" to false,
+                            "7" to false,
+                            "8" to false
+                        )
+                    )
+
+                    userProgressRef.setValue(initialProgress)
+                        .addOnSuccessListener {
+                            // Handle success
+                        }
+                        .addOnFailureListener {
+                            // Handle failure
+                        }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
     }
     private fun getFullNameProcess() {
 

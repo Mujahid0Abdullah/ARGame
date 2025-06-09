@@ -1,6 +1,7 @@
 package com.achelmas.numart
 
 import android.util.Log
+import com.google.ar.sceneform.AnchorNode
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
@@ -10,6 +11,7 @@ import android.graphics.Color
 import android.media.MediaPlayer
 
 import android.speech.tts.TextToSpeech
+import com.google.ar.sceneform.ux.TransformableNode
 
 import android.os.Bundle
 import android.view.View
@@ -159,7 +161,64 @@ class MatchGameActivity : AppCompatActivity() {
     }
 
     // ----------------------------------------------------------------------------------------------
-
+/*
+    private fun add3DNumberButton(
+        modelUri: String,
+        position: Vector3,
+        number: Int,
+        onClick: (String, Int) -> Unit
+    ) {
+        arFragment.setOnTapArPlaneListener { hitResult, _, _ ->
+            ModelRenderable.builder()
+                .setSource(this, Uri.parse(modelUri))
+                .setIsFilamentGltf(true)
+                .build()
+                .thenAccept { renderable ->
+                    val anchor = hitResult.createAnchor()
+                    Log.d("TAG",  "sttir 3")
+                    val anchorNode = AnchorNode(anchor)
+                    Log.d("TAG",  "sttir 4")
+                    anchorNode.setParent(arFragment.arSceneView.scene)
+                    Log.d("TAG",  "sttir 5")
+                    val node = TransformableNode(arFragment.transformationSystem).apply {
+                        this.renderable = renderable
+                        this.setParent(anchorNode)
+                        this.worldScale = Vector3(1.35f, 1.35f, 1.35f)
+                    }
+                    Log.d("TAG",  "sttir 6")
+                    val fileName = modelUri.substringAfterLast("/").substringBefore(".")
+                    node.setOnTapListener { _, _ -> onClick(fileName, number) }
+                }
+                .exceptionally { throwable ->
+                    throwable.printStackTrace()
+                    null
+                }
+        }}*//*
+    private fun add3DNumberButton(
+        modelUri: String,
+        position: Vector3,
+        number: Int,
+        onClick: (String, Int) -> Unit
+    ) {
+        ModelRenderable.builder()
+            .setSource(this, Uri.parse(modelUri))
+            .setIsFilamentGltf(true)
+            .build()
+            .thenAccept { renderable ->
+                val node = TransformableNode(arFragment.transformationSystem).apply {
+                    this.renderable = renderable
+                    this.worldPosition = position
+                    this.worldScale = Vector3(0.35f, 0.35f, 0.35f)
+                }
+                arFragment.arSceneView.scene.addChild(node)
+                val fileName = modelUri.substringAfterLast("/").substringBefore(".")
+                node.setOnTapListener { _, _ -> onClick(fileName, number) }
+            }
+            .exceptionally { throwable ->
+                throwable.printStackTrace()
+                null
+            }
+    }*/
     private fun add3DNumberButton(
         modelUri: String, // 3D model URI (e.g., "models/number24.sfb")
         position: Vector3, // // Model's position
