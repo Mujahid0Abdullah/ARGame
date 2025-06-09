@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+// Main activity for the Match game mode, handles navigation to level activities and user info display
 class MatchMainActivity : AppCompatActivity() {
 
     private lateinit var toolbar: Toolbar
@@ -31,44 +32,41 @@ class MatchMainActivity : AppCompatActivity() {
     private lateinit var mediumLevelBtn: RelativeLayout
     private lateinit var hardLevelBtn: RelativeLayout
 
-    //   Firebase authentication instance
+    // Firebase authentication instance
     private var mAuth: FirebaseAuth? = null
+
     /**
-     * ----------------------------------------------------------------------------- Called when the
-     * activity is first created.
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut
-     * down, this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     * Called when the activity is first created.
+     * Sets up UI, toolbar, user info, and button listeners.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Set language
+        // Set language based on user preference
         LanguageManager.loadLocale(this)
-
         setContentView(R.layout.activity_match_main)
 
         mAuth = FirebaseAuth.getInstance()
         Log.d("TAG", mAuth.toString())
 
-        // Initialize variables
+        // Initialize UI components
         toolbar = findViewById(R.id.mainActivity_toolBarId)
         fullNameTxtView = findViewById(R.id.mainActivity_fullnameId)
         easyLevelBtn = findViewById(R.id.mainActivity_easyLevelId)
         mediumLevelBtn = findViewById(R.id.mainActivity_mediumLevelId)
         hardLevelBtn = findViewById(R.id.mainActivity_hardLevelId)
+
+        // Set up toolbar navigation and menu
         toolbar.setNavigationIcon(R.drawable.arrow_back)
         toolbar.setNavigationOnClickListener { finish() }
-        // Set items ( Profile and Settings ) in Toolbar
         toolbar.inflateMenu(R.menu.menu_off)
-        // Handle menu item clicks
         itemsOfToolbar()
 
-        // get fullname from firebase
+        // Fetch and display user's full name
         getFullNameProcess()
 
-        // Handle button clicks
+        // Set click listeners for level buttons
         easyLevelBtn.setOnClickListener {
-
             if (NetworkUtils.isNetworkAvailable(this)) {
                 val intent = Intent(baseContext, MatchLvl1Activity::class.java)
                 startActivity(intent)
@@ -77,7 +75,6 @@ class MatchMainActivity : AppCompatActivity() {
             }
         }
         mediumLevelBtn.setOnClickListener {
-
             if (NetworkUtils.isNetworkAvailable(this)) {
                 val intent = Intent(baseContext, MediumLevelActivity::class.java)
                 startActivity(intent)
@@ -86,85 +83,62 @@ class MatchMainActivity : AppCompatActivity() {
             }
         }
         hardLevelBtn.setOnClickListener {
-            var intent = Intent(baseContext, HardLevelActivity::class.java)
+            val intent = Intent(baseContext, HardLevelActivity::class.java)
             startActivity(intent)
         }
 
+        // Initialize user progress in Firebase if not already set
         val userId = mAuth!!.currentUser?.uid
         if (userId != null) {
-            setInitialTargetProgress(userId) // Kullanıcının ilerlemesini Firebase'e kaydeder
+            setInitialTargetProgress(userId)
         }
-        println("hi")
     }
+
     /**
-     * ------------------------------------------------------------------------------------- Fetches
-     * the user's full name and age from Firebase and updates the UI.
+     * Fetches the user's full name and age from Firebase and updates the UI.
      */
     private fun getFullNameProcess() {
+        val reference: DatabaseReference =
+            FirebaseDatabase.getInstance().reference.child("Users").child(mAuth!!.currentUser!!.uid)
 
-        var reference: DatabaseReference =
-                FirebaseDatabase.getInstance()
-                        .reference
-                        .child("Users")
-                        .child(mAuth!!.currentUser!!.uid)
+        // Get full name and display with color highlight
+        reference.child("fullname").addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    fullName = snapshot.getValue(String::class.java)!!
+                    val text = "${resources.getString(R.string.welcome)}, ${fullName}! 👋"
+                    val spannable = SpannableString(text)
+                    val startIndex = text.indexOf(fullName)
+                    val endIndex = startIndex + fullName.length
+                    spannable.setSpan(
+                        ForegroundColorSpan(ContextCompat.getColor(baseContext, R.color.primaryColor)),
+                        startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    fullNameTxtView.text = spannable
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            }
+        )
 
-        // Use ValueEventListener to get the value of the "fullname" child
-        reference
-                .child("fullname")
-                .addListenerForSingleValueEvent(
-                        object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                // Get the value from the dataSnapshot
-                                fullName = snapshot.getValue(String::class.java)!!
-                                val text =
-                                        "${resources.getString(R.string.welcome)}, ${fullName}! 👋"
-
-                                // Create a SpannableString with the desired text
-                                val spannable = SpannableString(text)
-                                // Find the start and end index of the full name in the text
-                                val startIndex = text.indexOf(fullName)
-                                val endIndex = startIndex + fullName.length
-                                // Apply the color span to the full name
-                                spannable.setSpan(
-                                        ForegroundColorSpan(
-                                                ContextCompat.getColor(
-                                                        baseContext,
-                                                        R.color.primaryColor
-                                                )
-                                        ), // Use a color of your choice
-                                        startIndex,
-                                        endIndex,
-                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                )
-                                // Set the SpannableString to the TextView
-                                fullNameTxtView.text = spannable
-                            }
-                            override fun onCancelled(error: DatabaseError) {}
-                        }
-                )
-
-        // Use ValueEventListener to get the value of the "age" child
-        reference
-                .child("age")
-                .addListenerForSingleValueEvent(
-                        object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                // Get the value from the dataSnapshot
-                                age = snapshot.getValue(String::class.java)!!
-                            }
-                            override fun onCancelled(error: DatabaseError) {}
-                        }
-                )
+        // Get age (not displayed here, but fetched for use elsewhere)
+        reference.child("age").addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    age = snapshot.getValue(String::class.java)!!
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            }
+        )
     }
+
     /**
-     * -----------------------------------------------------------------------------------------
      * Sets up the toolbar menu and handles menu item clicks.
      */
     private fun itemsOfToolbar() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.settingsId -> {
-                    var intent = Intent(baseContext, SettingsActivity::class.java)
+                    val intent = Intent(baseContext, SettingsActivity::class.java)
                     intent.putExtra("fullname", fullName)
                     intent.putExtra("age", age)
                     startActivity(intent)
@@ -176,81 +150,80 @@ class MatchMainActivity : AppCompatActivity() {
     }
 
     /**
-     * --------------------------------------------------------------------------------------------------
      * Initializes the user's progress in Firebase if it does not already exist.
      * @param userId The unique ID of the user.
      */
     fun setInitialTargetProgress(userId: String) {
         val userProgressRef =
-                FirebaseDatabase.getInstance().reference.child("UserProgress").child(userId)
+            FirebaseDatabase.getInstance().reference.child("UserProgress").child(userId)
 
         userProgressRef.addListenerForSingleValueEvent(
-                object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (!snapshot.child("MatchEasyLevel").exists()) {
-                            val initialProgress =
-                                    mapOf(
-                                            "MatchEasyLevel" to
-                                                    mapOf(
-                                                            "1" to true,
-                                                            "2" to false,
-                                                            "3" to false,
-                                                            "4" to false,
-                                                            "5" to false,
-                                                            "6" to false,
-                                                            "7" to false,
-                                                            "8" to false
-                                                    ),
-                                            "MatchMediumLevel" to
-                                                    mapOf(
-                                                            "1" to false,
-                                                            "2" to false,
-                                                            "3" to false,
-                                                            "4" to false,
-                                                            "5" to false,
-                                                            "6" to false,
-                                                            "7" to false,
-                                                            "8" to false
-                                                    ),
-                                            "MatchHardLevel" to
-                                                    mapOf(
-                                                            "1" to false,
-                                                            "2" to false,
-                                                            "3" to false,
-                                                            "4" to false,
-                                                            "5" to false,
-                                                            "6" to false,
-                                                            "7" to false,
-                                                            "8" to false
-                                                    )
-                                    )
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (!snapshot.child("MatchEasyLevel").exists()) {
+                        val initialProgress =
+                            mapOf(
+                                "MatchEasyLevel" to
+                                        mapOf(
+                                            "1" to true,
+                                            "2" to false,
+                                            "3" to false,
+                                            "4" to false,
+                                            "5" to false,
+                                            "6" to false,
+                                            "7" to false,
+                                            "8" to false
+                                        ),
+                                "MatchMediumLevel" to
+                                        mapOf(
+                                            "1" to false,
+                                            "2" to false,
+                                            "3" to false,
+                                            "4" to false,
+                                            "5" to false,
+                                            "6" to false,
+                                            "7" to false,
+                                            "8" to false
+                                        ),
+                                "MatchHardLevel" to
+                                        mapOf(
+                                            "1" to false,
+                                            "2" to false,
+                                            "3" to false,
+                                            "4" to false,
+                                            "5" to false,
+                                            "6" to false,
+                                            "7" to false,
+                                            "8" to false
+                                        )
+                            )
 
-                            userProgressRef
-                                    .updateChildren(initialProgress)
-                                    .addOnSuccessListener {
-                                        // Handle success
-                                    }
-                                    .addOnFailureListener {
-                                        // Handle failure
-                                    }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        // Handle error
+                        userProgressRef
+                            .updateChildren(initialProgress)
+                            .addOnSuccessListener {
+                                // Progress initialized successfully
+                            }
+                            .addOnFailureListener {
+                                // Handle failure
+                            }
                     }
                 }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle error
+                }
+            }
         )
     }
 
+    // Clean up resources when activity is destroyed
     override fun onDestroy() {
         super.onDestroy()
-        // Clear any references and finish the activity
         finish()
     }
 
+    // Handle back button press
     override fun onBackPressed() {
-        // Finish the activity when back is pressed
         finish()
         super.onBackPressed()
     }

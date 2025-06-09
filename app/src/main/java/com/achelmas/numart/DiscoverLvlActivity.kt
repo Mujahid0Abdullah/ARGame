@@ -1,10 +1,7 @@
 package com.achelmas.numart
 
-
-
 import android.content.Intent
 import android.util.Log
-
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -22,11 +19,14 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.util.Locale
 
+/**
+ * DiscoverLvlActivity displays a list of discoverable levels for the user,
+ * manages user progress, and handles toolbar actions.
+ */
+class DiscoverLvlActivity : AppCompatActivity() {
 
-class DiscoverLvlActivity :AppCompatActivity() {
-
+    // UI components
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdapterOfDiscover
@@ -35,43 +35,50 @@ class DiscoverLvlActivity :AppCompatActivity() {
     private lateinit var fullName: String
     private lateinit var age: String
 
+    // Firebase references
     private lateinit var myReference: DatabaseReference
     private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_discover_level1)
-        Log.d("TAG",  "giiilşilşili "+LanguageManager.loadSelectedLanguage(this))
+        Log.d("TAG", "giiilşilşili " + LanguageManager.loadSelectedLanguage(this))
 
+        // Initialize Firebase Auth and UI elements
         mAuth = FirebaseAuth.getInstance()
         fullNameTxtView = findViewById(R.id.mainActivity_fullnameId)
-        // Initialize Views
         toolbar = findViewById(R.id.easyLvlActivity_toolBarId)
         recyclerView = findViewById(R.id.easyLvlActivity_recyclerViewId)
 
-        // Set arrow back button to Toolbar
+        // Set up toolbar with back arrow and menu
         toolbar.setNavigationIcon(R.drawable.arrow_back)
-        toolbar.setNavigationOnClickListener {
-            finish()
-        }
+        toolbar.setNavigationOnClickListener { finish() }
         toolbar.inflateMenu(R.menu.menu_off)
+        itemsOfToolbar()
 
+        // Set up RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
-        itemsOfToolbar()
+
+        // Initialize user progress in Firebase if not already set
         val userId = mAuth!!.currentUser?.uid
         if (userId != null) {
-            setInitialTargetProgress(userId)  // Kullanıcının ilerlemesini Firebase'e kaydeder
+            setInitialTargetProgress(userId)
         }
-        // get fullname from firebase
+
+        // Fetch and display user's full name
         getFullNameProcess()
-       // getDataFromFirebase()
     }
+
     override fun onResume() {
         super.onResume()
         getDataFromFirebase()
     }
 
+    /**
+     * Fetches discoverable levels and user progress from Firebase,
+     * and updates the RecyclerView with the data.
+     */
     private fun getDataFromFirebase() {
         discoverList = ArrayList()
         myReference = FirebaseDatabase.getInstance().reference
@@ -79,15 +86,15 @@ class DiscoverLvlActivity :AppCompatActivity() {
         val userId = mAuth!!.currentUser!!.uid
         val userRef = myReference.child("Users").child(userId)
 
-        // Kullanıcının yaşını al
+        // Get user's age to determine which dataset to use
         userRef.child("age").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(ageSnapshot: DataSnapshot) {
                 val userAgeStr = ageSnapshot.getValue(String::class.java) ?: "10"
                 val userAge = userAgeStr.toIntOrNull() ?: 10
 
-                // Yaşa göre hedef dataset’i belirle
+                // Choose dataset based on age
                 val datasetName = if (userAge > 10) "DiscoverHardLevel" else "Dicover game"
-                val userProgressRef = myReference.child("UserProgress").child(userId).child("DiscoverEasyLevel") // İsteğe göre "DiscoverHardLevel" için ayrı da yapılabilir
+                val userProgressRef = myReference.child("UserProgress").child(userId).child("DiscoverEasyLevel")
                 val targetsRef = myReference.child(datasetName)
 
                 userProgressRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -110,11 +117,10 @@ class DiscoverLvlActivity :AppCompatActivity() {
                                     model.shape2 = snapshot.child("shape2").value.toString()
                                     model.shape3 = snapshot.child("shape3").value.toString()
                                     model.shape4 = snapshot.child("shape4").value.toString()
-
+                                    // Unlock first target or if user progress says unlocked
                                     model.isUnlocked = userProgressSnapshot.child(model.targetNumber).value == true || model.targetNumber == "1"
                                     discoverList.add(model)
                                 }
-
                                 adapter = AdapterOfDiscover(this@DiscoverLvlActivity, discoverList)
                                 recyclerView.adapter = adapter
                                 adapter.notifyDataSetChanged()
@@ -125,59 +131,54 @@ class DiscoverLvlActivity :AppCompatActivity() {
                     override fun onCancelled(error: DatabaseError) {}
                 })
             }
-
             override fun onCancelled(error: DatabaseError) {}
         })
     }
 
-
+    /**
+     * Fetches the user's full name and age from Firebase and updates the UI.
+     * Applies color styling to the full name in the welcome message.
+     */
     private fun getFullNameProcess() {
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(mAuth!!.currentUser!!.uid)
 
-        var reference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(mAuth!!.currentUser!!.uid)
-
-        // Use ValueEventListener to get the value of the "fullname" child
+        // Get full name and update welcome message
         reference.child("fullname").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Get the value from the dataSnapshot
                 fullName = snapshot.getValue(String::class.java)!!
-                val text =  "${resources.getString(R.string.welcome)}, ${fullName}! 👋"
-
-                // Create a SpannableString with the desired text
+                val text = "${resources.getString(R.string.welcome)}, ${fullName}! 👋"
                 val spannable = SpannableString(text)
-                // Find the start and end index of the full name in the text
                 val startIndex = text.indexOf(fullName)
                 val endIndex = startIndex + fullName.length
-                // Apply the color span to the full name
                 spannable.setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(baseContext, R.color.primaryColor)), // Use a color of your choice
+                    ForegroundColorSpan(ContextCompat.getColor(baseContext, R.color.primaryColor)),
                     startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                // Set the SpannableString to the TextView
                 fullNameTxtView.text = spannable
             }
-            override fun onCancelled(error: DatabaseError) {
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
 
-        // Use ValueEventListener to get the value of the "age" child
+        // Get age (used for settings)
         reference.child("age").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Get the value from the dataSnapshot
                 age = snapshot.getValue(String::class.java)!!
             }
             override fun onCancelled(error: DatabaseError) {}
         })
     }
-    /**-----------------------------------------------------------------------------------------
+
+    /**
      * Sets up the toolbar menu and handles menu item clicks.
+     * Handles navigation to settings, passing user info.
      */
     private fun itemsOfToolbar() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.settingsId -> {
-                    var intent = Intent(baseContext , SettingsActivity::class.java)
-                    intent.putExtra("fullname",fullName)
-                    intent.putExtra("age",age)
+                    val intent = Intent(baseContext, SettingsActivity::class.java)
+                    intent.putExtra("fullname", fullName)
+                    intent.putExtra("age", age)
                     startActivity(intent)
                     true
                 }
@@ -186,8 +187,7 @@ class DiscoverLvlActivity :AppCompatActivity() {
         }
     }
 
-
-    /**--------------------------------------------------------------------------------------------------
+    /**
      * Initializes the user's progress in Firebase if it does not already exist.
      * @param userId The unique ID of the user.
      */
@@ -222,17 +222,15 @@ class DiscoverLvlActivity :AppCompatActivity() {
                             "20" to false
                         )
                     )
-
                     userProgressRef.updateChildren(initialProgress)
                         .addOnSuccessListener {
-                            // Handle success
+                            // Progress initialized successfully
                         }
                         .addOnFailureListener {
                             // Handle failure
                         }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 // Handle error
             }

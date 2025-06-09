@@ -8,29 +8,30 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.achelmas.numart.GameActivity
-import com.achelmas.numart.R
-import com.achelmas.numart.ModelOfDiscover
 
+// Adapter for displaying discover level cards in a RecyclerView.
+// Handles enabling/disabling levels based on unlock status and starts the discover game activity for unlocked levels.
+class AdapterOfDiscover(
+    var activity: Activity,
+    var easyLvlList: ArrayList<ModelOfDiscover>
+) : RecyclerView.Adapter<AdapterOfDiscover.MyViewHolder>() {
 
-
-class AdapterOfDiscover (var activity: Activity, var easyLvlList: ArrayList<ModelOfDiscover>) : RecyclerView.Adapter<AdapterOfDiscover.MyViewHolder>() {
-
+    // Inflates the card layout for each discover level item
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        var view: View = LayoutInflater.from(activity).inflate(R.layout.match_card_item, parent, false)
-
-
+        val view: View = LayoutInflater.from(activity).inflate(R.layout.match_card_item, parent, false)
         return MyViewHolder(view)
     }
 
+    // Returns the number of discover levels to display
     override fun getItemCount(): Int = easyLvlList.size
 
+    // Binds data to each card and sets up click listeners based on unlock status
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val model: ModelOfDiscover = easyLvlList.get(position)
-        // Show only the first 30 characters of the question
+        val model: ModelOfDiscover = easyLvlList[position]
         val previewLength = 30
         val languageCode = LanguageManager.loadSelectedLanguage(activity)
 
+        // Get the question in the user's language, fallback to English if not available
         val questionText = model.question[languageCode] ?: model.question["en"] ?: "Question unavailable"
         val questionPreview = if (questionText.length > previewLength) {
             questionText.substring(0, previewLength) + "…"
@@ -38,14 +39,13 @@ class AdapterOfDiscover (var activity: Activity, var easyLvlList: ArrayList<Mode
             questionText
         }
 
-
         holder.targetOfStar.text = "Level ${model.targetNumber}"
         holder.targetOfTitle.text = questionPreview
 
         if (model.isUnlocked) {
-            // Hedef açık
+            // Level is unlocked: enable button and set click listener to start the discover game
             holder.levelButton.isEnabled = true
-            holder.levelButton.alpha = 1.0f // Normal görünüm
+            holder.levelButton.alpha = 1.0f
             holder.levelButton.setOnClickListener {
                 val intent = Intent(activity, DiscoverGameActivity::class.java)
                 intent.putExtra("Question", questionText)
@@ -58,23 +58,17 @@ class AdapterOfDiscover (var activity: Activity, var easyLvlList: ArrayList<Mode
                 activity.startActivity(intent)
             }
         } else {
-            // Hedef kapalı
+            // Level is locked: disable button and make it semi-transparent
             holder.levelButton.isEnabled = false
-            holder.levelButton.alpha = 0.5f // Şeffaf görünüm
-            holder.levelButton.setOnClickListener(null) // Tıklamayı kaldır
+            holder.levelButton.alpha = 0.5f
+            holder.levelButton.setOnClickListener(null)
         }
     }
 
+    // ViewHolder holds references to the views for each card item
     inner class MyViewHolder(i: View) : RecyclerView.ViewHolder(i) {
-        var targetOfStar: TextView
-        var targetOfTitle: TextView
-        var levelButton: CardView
-
-        init {
-            targetOfStar = i.findViewById(R.id.discoverCardItem_level)
-            targetOfTitle = i.findViewById(R.id.discoverCardItem_question)
-            levelButton = i.findViewById(R.id.discoverCardItem_buttonId)
-        }
-
+        var targetOfStar: TextView = i.findViewById(R.id.discoverCardItem_level)
+        var targetOfTitle: TextView = i.findViewById(R.id.discoverCardItem_question)
+        var levelButton: CardView = i.findViewById(R.id.discoverCardItem_buttonId)
     }
 }

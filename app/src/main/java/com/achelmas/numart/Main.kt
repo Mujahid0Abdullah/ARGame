@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import org.json.JSONObject
 
+// Utility object to check network connectivity
 object NetworkUtils {
     fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -36,14 +37,18 @@ object NetworkUtils {
         return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }
+
+// Main menu activity for the app
 class Main : AppCompatActivity(){
     private lateinit var toolbar: Toolbar
 
+    // Main menu buttons
     private lateinit var SumGameBtn : RelativeLayout
     private lateinit var MatchGameBtn : RelativeLayout
     private lateinit var DiscGameBtn : RelativeLayout
     private lateinit var zomGameBtn : RelativeLayout
 
+    // User info
     private lateinit var fullName: String
     private lateinit var fullNameTxtView: TextView
     private lateinit var age: String
@@ -53,80 +58,63 @@ class Main : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Set language
+        // Set language based on user preference
         LanguageManager.loadLocale(this)
-        // Set edge to edge
         setContentView(R.layout.activity_mainpage)
         mAuth = FirebaseAuth.getInstance()
         val userId = mAuth!!.currentUser?.uid
         if (userId != null) {
-            setInitialTargetProgress(userId)  // Kullanıcının ilerlemesini Firebase'e kaydeder
+            setInitialTargetProgress(userId)  // Initialize user progress in Firebase if not present
         }
+        // Initialize UI components
         toolbar = findViewById(R.id.mainActivity_toolBarId)
         SumGameBtn = findViewById(R.id.sum_game)
         DiscGameBtn = findViewById(R.id.Discover_game)
         zomGameBtn   = findViewById(R.id.zombie_game)
-
         MatchGameBtn = findViewById(R.id.match_game)
         fullNameTxtView = findViewById(R.id.mainActivity_fullnameId)
 
-
+        // Set click listeners for main menu buttons
         SumGameBtn.setOnClickListener {
-
-
             if (NetworkUtils.isNetworkAvailable(this)) {
                 val intent = Intent(baseContext, MainActivity::class.java)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show()
             }
-
-
         }
         DiscGameBtn.setOnClickListener {
-
             if (NetworkUtils.isNetworkAvailable(this)) {
                 val intent = Intent(baseContext, DiscoverLvlActivity::class.java)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show()
             }
-
-
         }
         zomGameBtn.setOnClickListener {
-            var intent = Intent(baseContext , ZombieActivity::class.java)
+            val intent = Intent(baseContext , ZombieActivity::class.java)
             startActivity(intent)
-
-
-
         }
 
-
-
-
-        // Set arrow back button to Toolbar
+        // Set up toolbar menu
         toolbar.inflateMenu(R.menu.menu_off)
-        // Handle menu item clicks
         itemsOfToolbar()
 
-        // get fullname from firebase
+        // Fetch and display user's full name
         getFullNameProcess()
 
         MatchGameBtn.setOnClickListener {
-
             if (NetworkUtils.isNetworkAvailable(this)) {
                 val intent = Intent(baseContext, MatchMainActivity::class.java)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show()
             }
-
-
         }
         myReference = FirebaseDatabase.getInstance().reference
-
     }
+
+    // Initializes user progress in Firebase if not already set
     fun setInitialTargetProgress(userId: String) {
         val userProgressRef = FirebaseDatabase.getInstance().reference
             .child("UserProgress")
@@ -174,7 +162,7 @@ class Main : AppCompatActivity(){
 
                     userProgressRef.setValue(initialProgress)
                         .addOnSuccessListener {
-                            // Handle success
+                            // Progress initialized successfully
                         }
                         .addOnFailureListener {
                             // Handle failure
@@ -187,50 +175,45 @@ class Main : AppCompatActivity(){
             }
         })
     }
+
+    // Fetches user's full name and age from Firebase and updates the UI
     private fun getFullNameProcess() {
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(mAuth!!.currentUser!!.uid)
 
-        var reference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(mAuth!!.currentUser!!.uid)
-
-        // Use ValueEventListener to get the value of the "fullname" child
+        // Get full name and display with color highlight
         reference.child("fullname").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Get the value from the dataSnapshot
                 fullName = snapshot.getValue(String::class.java)!!
                 val text =  "${resources.getString(R.string.welcome)}, ${fullName}! 👋"
-
-                // Create a SpannableString with the desired text
                 val spannable = SpannableString(text)
-                // Find the start and end index of the full name in the text
                 val startIndex = text.indexOf(fullName)
                 val endIndex = startIndex + fullName.length
-                // Apply the color span to the full name
                 spannable.setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(baseContext, R.color.primaryColor)), // Use a color of your choice
+                    ForegroundColorSpan(ContextCompat.getColor(baseContext, R.color.primaryColor)),
                     startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                // Set the SpannableString to the TextView
                 fullNameTxtView.text = spannable
             }
-            override fun onCancelled(error: DatabaseError) {
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
 
-        // Use ValueEventListener to get the value of the "age" child
+        // Get age (not displayed here, but fetched for use elsewhere)
         reference.child("age").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Get the value from the dataSnapshot
                 age = snapshot.getValue(String::class.java)!!
             }
             override fun onCancelled(error: DatabaseError) {}
         })
     }
+
+    // Handles toolbar menu item clicks (e.g., settings)
     private fun itemsOfToolbar() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.settingsId -> {
-                    var intent = Intent(baseContext , SettingsActivity::class.java)
-                    intent.putExtra("fullname",fullName)
-                    intent.putExtra("age",age)
+                    val intent = Intent(baseContext , SettingsActivity::class.java)
+                    intent.putExtra("fullname", fullName)
+                    intent.putExtra("age", age)
                     startActivity(intent)
                     true
                 }
@@ -238,9 +221,4 @@ class Main : AppCompatActivity(){
             }
         }
     }
-
-
-
-
-
 }

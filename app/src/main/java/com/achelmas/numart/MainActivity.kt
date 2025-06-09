@@ -28,9 +28,13 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+/**
+ * MainActivity is the entry point for the app after login.
+ * Handles user greeting, navigation to levels, and toolbar actions.
+ */
 class MainActivity : AppCompatActivity() {
 
-
+    // UI components
     private lateinit var toolbar: Toolbar
     private lateinit var fullNameTxtView: TextView
     private lateinit var fullName: String
@@ -39,42 +43,40 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mediumLevelBtn : RelativeLayout
     private lateinit var hardLevelBtn : RelativeLayout
 
-    //Firebase
+    // Firebase authentication instance
     private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Set language
+        // Set app language based on saved preference
         LanguageManager.loadLocale(this)
 
         setContentView(R.layout.activity_main)
 
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
         Log.d("TAG", mAuth.toString())
 
-        // Initialize variables
+        // Find and assign UI elements
         toolbar = findViewById(R.id.mainActivity_toolBarId)
         fullNameTxtView = findViewById(R.id.mainActivity_fullnameId)
         easyLevelBtn = findViewById(R.id.mainActivity_easyLevelId)
         mediumLevelBtn = findViewById(R.id.mainActivity_mediumLevelId)
         hardLevelBtn = findViewById(R.id.mainActivity_hardLevelId)
-        toolbar.setNavigationIcon(R.drawable.arrow_back)
-        toolbar.setNavigationOnClickListener {
-            finish()
-        }
-        // Set items ( Profile and Settings ) in Toolbar
-        toolbar.inflateMenu(R.menu.menu_off)
-        // Handle menu item clicks
-        itemsOfToolbar()
 
-        // get fullname from firebase
+        // Set up toolbar navigation and menu
+        toolbar.setNavigationIcon(R.drawable.arrow_back)
+        toolbar.setNavigationOnClickListener { finish() }
+        toolbar.inflateMenu(R.menu.menu_off)
+        itemsOfToolbar() // Set up toolbar menu item click listeners
+
+        // Fetch and display user's full name from Firebase
         getFullNameProcess()
 
-        // Handle button clicks
+        // Set up click listeners for level buttons
         easyLevelBtn.setOnClickListener {
-
-
+            // Only allow navigation if network is available
             if (NetworkUtils.isNetworkAvailable(this)) {
                 val intent = Intent(baseContext, EasyLevelActivity::class.java)
                 startActivity(intent)
@@ -83,8 +85,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         mediumLevelBtn.setOnClickListener {
-
-
             if (NetworkUtils.isNetworkAvailable(this)) {
                 val intent = Intent(baseContext, MediumLevelActivity::class.java)
                 startActivity(intent)
@@ -93,8 +93,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         hardLevelBtn.setOnClickListener {
-
-
             if (NetworkUtils.isNetworkAvailable(this)) {
                 val intent = Intent(baseContext, HardLevelActivity::class.java)
                 startActivity(intent)
@@ -103,59 +101,58 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Initialize user progress in Firebase if not already set
         val userId = mAuth!!.currentUser?.uid
         if (userId != null) {
-            setInitialTargetProgress(userId)  // Kullanıcının ilerlemesini Firebase'e kaydeder
+            setInitialTargetProgress(userId)
         }
-
-
     }
 
+    /**
+     * Fetches the user's full name and age from Firebase and updates the UI.
+     * Applies color styling to the full name in the welcome message.
+     */
     private fun getFullNameProcess() {
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().reference
+            .child("Users").child(mAuth!!.currentUser!!.uid)
 
-        var reference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(mAuth!!.currentUser!!.uid)
-
-        // Use ValueEventListener to get the value of the "fullname" child
+        // Get full name and update welcome message
         reference.child("fullname").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Get the value from the dataSnapshot
                 fullName = snapshot.getValue(String::class.java)!!
                 val text =  "${resources.getString(R.string.welcome)}, ${fullName}! 👋"
-
-                // Create a SpannableString with the desired text
                 val spannable = SpannableString(text)
-                // Find the start and end index of the full name in the text
                 val startIndex = text.indexOf(fullName)
                 val endIndex = startIndex + fullName.length
-                // Apply the color span to the full name
                 spannable.setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(baseContext, R.color.primaryColor)), // Use a color of your choice
+                    ForegroundColorSpan(ContextCompat.getColor(baseContext, R.color.primaryColor)),
                     startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                // Set the SpannableString to the TextView
                 fullNameTxtView.text = spannable
             }
-            override fun onCancelled(error: DatabaseError) {
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
 
-        // Use ValueEventListener to get the value of the "age" child
+        // Get age (used for settings)
         reference.child("age").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Get the value from the dataSnapshot
                 age = snapshot.getValue(String::class.java)!!
             }
             override fun onCancelled(error: DatabaseError) {}
         })
     }
 
+    /**
+     * Sets up toolbar menu item click listeners.
+     * Handles navigation to settings, passing user info.
+     */
     private fun itemsOfToolbar() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.settingsId -> {
-                    var intent = Intent(baseContext , SettingsActivity::class.java)
-                    intent.putExtra("fullname",fullName)
-                    intent.putExtra("age",age)
+                    val intent = Intent(baseContext, SettingsActivity::class.java)
+                    intent.putExtra("fullname", fullName)
+                    intent.putExtra("age", age)
                     startActivity(intent)
                     true
                 }
@@ -164,6 +161,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Initializes user progress in Firebase if not already present.
+     * Sets up default progress for each level.
+     */
     fun setInitialTargetProgress(userId: String) {
         val userProgressRef = FirebaseDatabase.getInstance().reference
             .child("UserProgress")
@@ -208,22 +209,18 @@ class MainActivity : AppCompatActivity() {
                             "8" to false
                         )
                     )
-
                     userProgressRef.setValue(initialProgress)
                         .addOnSuccessListener {
-                            // Handle success
+                            // Progress initialized successfully
                         }
                         .addOnFailureListener {
                             // Handle failure
                         }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 // Handle error
             }
         })
     }
-
-
 }
