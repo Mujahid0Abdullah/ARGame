@@ -83,9 +83,8 @@ Uygulama Android 8.0+ destekli cihazlarda test edilmiştir.
 ## 📷 Uygulama Videosu
 
 
-🎥 [Match Oyunun Demo Videosu İzle](https://youtube.com/shorts/dm-a3USfmCQ?feature=share) 
+🎥 [Oyunun Deneme Videosu İzle](https://drive.google.com/drive/folders/1NMVtW9hNAzjKB4gYqQLH6m0gxQtr0Yrj?usp=sharing) 
 
-🎥 [Math Oyunun Demo Videosu İzle](https://youtube.com/shorts/VfHXMOfZC1w?feature=share) 
 
 
 
