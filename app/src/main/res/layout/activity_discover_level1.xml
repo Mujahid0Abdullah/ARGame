@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".easyLevelMVC.EasyLevelActivity">
+
+    <RelativeLayout
+        android:id="@+id/easyLvlActivity_toolbar_relativeLayoutId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/easyLvlActivity_toolBarId"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/primaryColor"
+            app:layout_scrollFlags="scroll|snap|enterAlways"
+            app:popupTheme="@style/Theme.MaterialComponents.Light"
+            app:title="@string/easy_level"
+            app:titleTextAppearance="@style/styleOfToolbar"
+            app:titleTextColor="@color/white" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_below="@id/easyLvlActivity_easyLevel_relativelayoutId"
+        android:id="@+id/easyLevel_relativelayoutId"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:id="@+id/mainActivity_fullnameId"
+            android:text="@string/hello_fullname"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="match_parent"
+            android:textSize="23sp"
+            android:fontFamily="@font/righteous"
+            />
+        <TextView
+            android:layout_below="@id/mainActivity_fullnameId"
+            android:id="@+id/fullnameId"
+
+            android:text="@string/discover_activity_description"
+            android:textColor="@color/black"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/righteous"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/easyLvlActivity_toolbar_relativeLayoutId"
+        android:id="@+id/easyLvlActivity_easyLevel_relativelayoutId"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="165dp">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+
+            android:layout_marginTop="3dp"
+
+
+            android:layout_marginBottom="-12dp"
+            android:elevation="8dp"
+            android:src="@drawable/giraffe_writing_journal" />
+
+
+
+        <RelativeLayout
+            android:id="@+id/easyLvlActivity_easyLevelId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/background_levels"
+            android:backgroundTint="#7A63AF">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="1dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/teko_semibold"
+                android:gravity="center"
+                android:text="@string/Discover_game"
+                android:textColor="@color/black"
+                android:textSize="40sp" />
+
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/easyLvlActivity_recyclerViewId"
+        android:layout_below="@id/easyLevel_relativelayoutId"
+        android:layout_marginTop="25sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

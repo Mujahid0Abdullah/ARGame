@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var easyLevelBtn : RelativeLayout
     private lateinit var mediumLevelBtn : RelativeLayout
     private lateinit var hardLevelBtn : RelativeLayout
-    private lateinit var openARButton : Button
 
     //Firebase
     private var mAuth: FirebaseAuth? = null
@@ -60,7 +59,10 @@ class MainActivity : AppCompatActivity() {
         easyLevelBtn = findViewById(R.id.mainActivity_easyLevelId)
         mediumLevelBtn = findViewById(R.id.mainActivity_mediumLevelId)
         hardLevelBtn = findViewById(R.id.mainActivity_hardLevelId)
-
+        toolbar.setNavigationIcon(R.drawable.arrow_back)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
         // Set items ( Profile and Settings ) in Toolbar
         toolbar.inflateMenu(R.menu.menu_off)
         // Handle menu item clicks
@@ -71,28 +73,41 @@ class MainActivity : AppCompatActivity() {
 
         // Handle button clicks
         easyLevelBtn.setOnClickListener {
-            var intent = Intent(baseContext , EasyLevelActivity::class.java)
-            startActivity(intent)
+
+
+            if (NetworkUtils.isNetworkAvailable(this)) {
+                val intent = Intent(baseContext, EasyLevelActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show()
+            }
         }
         mediumLevelBtn.setOnClickListener {
-            var intent = Intent(baseContext , MediumLevelActivity::class.java)
-            startActivity(intent)
+
+
+            if (NetworkUtils.isNetworkAvailable(this)) {
+                val intent = Intent(baseContext, MediumLevelActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show()
+            }
         }
         hardLevelBtn.setOnClickListener {
-            var intent = Intent(baseContext , HardLevelActivity::class.java)
-            startActivity(intent)
+
+
+            if (NetworkUtils.isNetworkAvailable(this)) {
+                val intent = Intent(baseContext, HardLevelActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val userId = mAuth!!.currentUser?.uid
         if (userId != null) {
             setInitialTargetProgress(userId)  // Kullanıcının ilerlemesini Firebase'e kaydeder
         }
-        openARButton = findViewById(R.id.openARButton)
-        println("hi")
-        openARButton.setOnClickListener {
-            val intent = Intent(this, PuzzleGameActivity::class.java)
-            startActivity(intent)
-        }
+
 
     }
 
@@ -166,17 +181,21 @@ class MainActivity : AppCompatActivity() {
                             "5" to false,
                             "6" to false,
                             "7" to false,
-                            "8" to false
+                            "8" to false,
+                            "9" to false,
+                            "10" to false
                         ),
                         "A2MediumLevel" to mapOf(
-                            "1" to false,
-                            "2" to false,
-                            "3" to false,
-                            "4" to false,
-                            "5" to false,
-                            "6" to false,
-                            "7" to false,
-                            "8" to false
+                            "11" to true,
+                            "12" to false,
+                            "13" to false,
+                            "14" to false,
+                            "15" to false,
+                            "16" to false,
+                            "17" to false,
+                            "18" to false,
+                            "19" to false,
+                            "20" to false
                         ),
                         "A3HardLevel" to mapOf(
                             "1" to false,

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ZombieActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/arSceneViewId"
+        android:layout_width="match_parent"
+        android:name="com.google.ar.sceneform.ux.ArFragment"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <nl.dionsegijn.konfetti.xml.KonfettiView
+            android:id="@+id/konfetti_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+
+
+        <LinearLayout
+            android:id="@+id/operationButtonsId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/gameActivity_scoreView"
+                android:layout_above="@id/operationButtonsId"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/gameActivity_starView"
+                    android:src="@drawable/subtraction_icon"
+                    android:layout_width="280dp"
+                    android:layout_marginBottom="-23dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_centerInParent="true"
+                    android:layout_height="130dp"/>
+
+                <!-- Hedef -->
+
+                <TextView
+                    android:id="@+id/gameActivity_targetView"
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/righteous"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:paddingBottom="13dp"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content"
+                    android:text="101"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+            </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/gameActivity_refreshButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="25dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/refresh_icon" />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/gameActivity_nextBtn_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/gameActivity_nextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/to_next_target"
+                        android:fontFamily="@font/righteous"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/next_icon" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/gameActivity_refreshBtn_linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/gameActivity_refreshButton_withText"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/restart_game"
+                        android:fontFamily="@font/righteous"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/refresh_icon" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="16dp">
+            <ImageButton
+                android:id="@+id/muteButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_volume_off"
+                android:contentDescription="mute button"
+                android:scaleType="centerInside"
+                android:padding="5dp" />
+            <!-- İşlem Görüntüleme -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_gravity="center"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#30FFFEFE"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="0dp">
+
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/gameActivity_expressionView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:gravity="center"
+                    android:fontFamily="@font/wendy_one"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="22sp" />
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Game"
+            android:layout_centerInParent="true"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:padding="36dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

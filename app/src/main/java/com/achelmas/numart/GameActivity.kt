@@ -1,4 +1,6 @@
 package com.achelmas.numart
+import android.util.Log
+import com.google.ar.sceneform.collision.Box
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
@@ -14,24 +16,27 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import com.achelmas.numart.easyLevelMVC.EasyLevelActivity
-import com.google.ar.core.TrackingState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import io.github.sceneview.ar.ArSceneView
-import io.github.sceneview.ar.node.ArModelNode
-import io.github.sceneview.math.Position
+import com.google.ar.sceneform.ux.TransformableNode
+import com.google.ar.sceneform.ux.TransformationSystem
+//import io.github.sceneview.SceneView
+//import io.github.sceneview.ar.node.ArModelNode
+//import io.github.sceneview.ar.ArSceneView
+//import io.github.sceneview.math.Position
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import nl.dionsegijn.konfetti.xml.KonfettiView
 import java.util.concurrent.TimeUnit
-
+import com.google.ar.sceneform.Node
+import com.google.ar.sceneform.math.Vector3
+import com.google.ar.sceneform.rendering.ModelRenderable
+import com.google.ar.sceneform.ux.ArFragment
+import android.net.Uri
+import com.google.ar.core.TrackingState
 class GameActivity : AppCompatActivity() {
 
-    private lateinit var additionButton: CardView
-    private lateinit var subtractionButton: CardView
-    private lateinit var multiplicationButton: CardView
-    private lateinit var divisionButton: CardView
+
     private lateinit var refreshButton: CardView
     private lateinit var expressionView: TextView
     private lateinit var targetView: TextView
@@ -39,6 +44,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var refreshBtnLinearLayout: LinearLayout
     private lateinit var nextButton: CardView
     private lateinit var refreshButtonWithText: CardView
+    private lateinit var transformationSystem: TransformationSystem
 
     private var currentResult: Int? = null
     private var currentOperation: String? = null
@@ -48,8 +54,9 @@ class GameActivity : AppCompatActivity() {
     private var usedNumbers = mutableSetOf<Int>()
     private val history = StringBuilder()
 
-    private lateinit var sceneView: ArSceneView
+    //private lateinit var sceneView: ArSceneView
     private lateinit var konfettiView: KonfettiView
+    private lateinit var arFragment: ArFragment
 
     // Numbers
     private var number1: Int = 0
@@ -66,10 +73,7 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
 
         // Button and TextView initializations
-        additionButton = findViewById(R.id.gameActivity_additionButton)
-        subtractionButton = findViewById(R.id.gameActivity_subtractionButton)
-        multiplicationButton = findViewById(R.id.gameActivity_multiplicationButton)
-        divisionButton = findViewById(R.id.gameActivity_divisionButton)
+
         refreshButton = findViewById(R.id.gameActivity_refreshButton)
         expressionView = findViewById(R.id.gameActivity_expressionView)
         targetView = findViewById(R.id.gameActivity_targetView)
@@ -78,6 +82,8 @@ class GameActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.gameActivity_nextButton)
         refreshBtnLinearLayout = findViewById(R.id.gameActivity_refreshBtn_linearLayout)
         refreshButtonWithText = findViewById(R.id.gameActivity_refreshButton_withText)
+        //transformationSystem = TransformationSystem(resources.displayMetrics, arFragment.transformationSystem.gestureDetector)
+        //val gestureRecognizer = arFragment.arSceneView.nodeGestureRecognizer
 
 
         var bundle: Bundle = intent.extras!!
@@ -90,15 +96,15 @@ class GameActivity : AppCompatActivity() {
             number4 = bundle.getString("Number4")!!.toInt()
         }
 
-        sceneView = findViewById(R.id.arSceneViewId)
+        //sceneView = findViewById(R.id.arSceneViewId)
+        arFragment = supportFragmentManager.findFragmentById(R.id.arSceneViewId) as ArFragment
+        // Disable the hand animation
+       // arFragment.planeDiscoveryController.hide()
 
         initializeGame()
 
-        // Operation buttons (2D)
-        additionButton.setOnClickListener { onOperationSelected("+") }
-        subtractionButton.setOnClickListener { onOperationSelected("-") }
-        multiplicationButton.setOnClickListener { onOperationSelected("×") }
-        divisionButton.setOnClickListener { onOperationSelected("÷") }
+        // Operation buttons
+
         refreshButton.setOnClickListener {
             finish()
             startActivity(intent)
@@ -106,8 +112,94 @@ class GameActivity : AppCompatActivity() {
 
     }
 
-    // ----------------------------------------------------------------------------------------------
+    private fun add3DOperationButton(
+        modelUri: String,
+        position: Vector3,
+        operation: String,
+        onClick: (String) -> Unit
+    ) {
+        ModelRenderable.builder()
+            .setSource(this, Uri.parse(modelUri))
+            .setIsFilamentGltf(true)
+            .build()
+            .thenAccept { renderable ->
+                val node = Node().apply {
+                    this.renderable = renderable
+                    this.worldPosition = position
+                    this.worldScale = Vector3(0.7f, 0.7f, 0.7f)
+                }
+                arFragment.arSceneView.scene.addChild(node)
+                node.setOnTapListener { _, _ ->
+                    onClick(operation)
+                }
+            }
+            .exceptionally {
+                it.printStackTrace()
+                null
+            }
+    }
+    private fun addOperationButtons() {
+        val operations = listOf("+", "-", "×", "÷")
+        val modelFiles = listOf(
+            "models/plus.glb",
+            "models/minus.glb",
+            "models/multiply.glb",
+            "models/divide.glb"
+        )
+        val positions = listOf(
+            Vector3(-0.5f, -0.3f, -0.2f),
+            Vector3(-0.2f, -0.3f, -0.2f),
+            Vector3(0.1f, -0.3f, -0.2f),
+            Vector3(0.3f, -0.3f, -0.2f)
+        )
+        for (i in operations.indices) {
+            add3DOperationButton(
+                modelUri = modelFiles[i],
+                position = positions[i],
+                operation = operations[i]
+            ) { selectedOperation ->
+                onOperationSelected(selectedOperation)
+            }
+        }
+    }
     private fun add3DNumberButton(
+        modelUri: String, // 3D model URI (e.g., "models/number24.sfb")
+        position: Vector3, // // Model's position
+        number: Int, // Number it represents
+        onClick: (Int) -> Unit // // Action on click
+    ) {
+        ModelRenderable.builder()
+            .setSource(this, Uri.parse(modelUri)) // GLB file in assets
+            .setIsFilamentGltf(true)
+            .build()
+            .thenAccept { renderable ->
+             val node = Node().apply {
+                    this.renderable = renderable
+                    this.worldPosition = position // Position of the model in AR space
+                    // Adjust the scale of the 3D model
+                    this.worldScale = Vector3(1.0025f, 1.0025f, 1.0025f)
+                }
+
+                arFragment.arSceneView.scene.addChild(node)
+
+                // Set a tap listener to handle user interaction with the 3D model
+                node.setOnTapListener { _, _ ->
+                    onClick(number)
+                }
+
+
+
+
+            }
+            .exceptionally { throwable ->
+                // Handle any errors that occur when loading the model
+                throwable.printStackTrace()
+                null
+            }
+    }
+
+    // ----------------------------------------------------------------------------------------------
+   /* private fun add3DNumberButton(
         glbFileLocation: String, // 3D model dosyası (örnek: "models/number24.glb")
         position: Position, // Modelin AR sahnesindeki pozisyonu
         number: Int, // Sayıyı temsil eder
@@ -123,15 +215,16 @@ class GameActivity : AppCompatActivity() {
         }
 
         sceneView.addChild(numberNode)
-    }
-
+    }*/
+/*
     private fun addNumberButtons() {
         // Modellerin farklı pozisyonlara yerleştirilmesi (x, y, z ekseninde farklılık)
         val positions = listOf(
-            Position(-1.0f, 0.5f, -1.5f), // Sol üst
-            Position(1.0f, 0.5f, -1.5f),  // Sağ üst
+            Position(-80.0f, 6.5f, -1.5f), // Sol üst
+            Position(6.0f, -7.5f, -1.5f),  // Sağ üst
             Position(-1.0f, -0.5f, -2.0f), // Sol alt
-            Position(1.0f, -0.5f, -2.0f)   // Sağ alt
+            Position(1.0f, -0.5f, -2.0f) ,  // Sağ alt
+
         )
 
         // Her bir sayıyı ve pozisyonunu ekleyelim
@@ -139,7 +232,9 @@ class GameActivity : AppCompatActivity() {
             Triple("models/number1.glb", positions[0], 1),   // Üstte
             Triple("models/number2.glb", positions[1], 2),   // Altta
             Triple("models/number5.glb", positions[2], 5), // Solda
-            Triple("models/number45.glb", positions[3], 45)  // Sağda
+
+            Triple("models/number45.glb", positions[3], 45)  ,// Sağda
+
         )
 
         for ((model, position, number) in numbersAndModels) {
@@ -151,8 +246,38 @@ class GameActivity : AppCompatActivity() {
                 onNumberSelected(selectedNumber)
             }
         }
+    }*/
+
+
+    private fun addNumberButtons() {
+        val positions = listOf(
+            Vector3(-0.5f, 0.0f, -0.5f), // Sol
+            Vector3(0.5f, 0.2f, -0.6f),  // Sağ
+            Vector3(-0.5f, -0.2f, -0.8f), // Sol arka
+            Vector3(0.5f, -0.3f, -0.7f)  // Sağ arka
+        )
+
+
+        val gameNumbers = listOf(number1, number2, number3, number4)
+
+        for (i in gameNumbers.indices) {
+            val number = gameNumbers[i]
+            val modelPath = "models/number$number.glb"
+            val position = positions.getOrNull(i) ?: Vector3(0f, 0f, -0.5f)
+
+            add3DNumberButton(
+                modelUri = modelPath,
+                position = position,
+                number = number
+            ) { selectedNumber ->
+                onNumberSelected(selectedNumber)
+            }
+        }
     }
 
+
+
+    //GAME START---------------------------------------------------------------
     private fun initializeGame() {
 
         addNumberButtons()
@@ -174,9 +299,13 @@ class GameActivity : AppCompatActivity() {
 
         resetScoreView() // Animasyonu geri döndür
 
-        // Enable operation buttons
-        enableOperationButtons()
+
+
+        addNumberButtons()
+        addOperationButtons()
     }
+
+
 
     private fun resetScoreView() {
         val scoreView = findViewById<RelativeLayout>(R.id.gameActivity_scoreView)
@@ -197,6 +326,7 @@ class GameActivity : AppCompatActivity() {
         animatorSet.start()
     }
 
+    // Number and operation selection===================================
     private fun onNumberSelected(number: Int) {
         if (usedNumbers.contains(number)) {
             Toast.makeText(this, resources.getString(R.string.number_already_used), Toast.LENGTH_SHORT).show()
@@ -265,12 +395,10 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    //GAME OVER -----------------------------------------------
     private fun onGameOver(isSuccess: Boolean) {
         // Visibility of buttons
-        additionButton.visibility = View.GONE
-        subtractionButton.visibility = View.GONE
-        multiplicationButton.visibility = View.GONE
-        divisionButton.visibility = View.GONE
+
         refreshButton.visibility = View.GONE
 
         if (isSuccess) {
@@ -290,8 +418,9 @@ class GameActivity : AppCompatActivity() {
             nextButton.setOnClickListener {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                startActivity(intent)
                 finish()
+
+                startActivity(intent)
             }
 
             // Unlock next target when current target is reached
@@ -335,8 +464,7 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
-        // Disable all buttons
-        disableAllButtons()
+
     }
 
     private fun unlockNextTarget(userId: String, completedTarget: Int) {
@@ -345,7 +473,7 @@ class GameActivity : AppCompatActivity() {
             .child("UserProgress")
             .child(userId)
             .child("A1EasyLevel")
-
+        Log.d("TAG", userProgressRef.toString())
         // Check if the next target is already unlocked
         userProgressRef.child(nextTarget.toString()).get().addOnSuccessListener { snapshot ->
             if (snapshot.exists() && snapshot.value == true) {
@@ -428,17 +556,18 @@ class GameActivity : AppCompatActivity() {
         handler.post(animationRunnable)
     }
 
-    private fun disableAllButtons() {
-        additionButton.isEnabled = false
-        subtractionButton.isEnabled = false
-        multiplicationButton.isEnabled = false
-        divisionButton.isEnabled = false
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Release resources here if you add any (e.g., MediaPlayer, Handler)
+        // Example:
+        // mediaPlayer?.release()
+        // handler?.removeCallbacksAndMessages(null)
     }
 
-    private fun enableOperationButtons() {
-        additionButton.isEnabled = true
-        subtractionButton.isEnabled = true
-        multiplicationButton.isEnabled = true
-        divisionButton.isEnabled = true
+    override fun onBackPressed() {
+        super.onBackPressed()
+        // Optionally release resources here if needed
     }
 }

@@ -14,7 +14,7 @@ import com.achelmas.numart.R
 class AdapterOfEasyLvl(var activity: Activity, var easyLvlList: ArrayList<ModelOfEasyLvl>) : RecyclerView.Adapter<AdapterOfEasyLvl.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        var view: View = LayoutInflater.from(activity).inflate(R.layout.levels_card_item, parent, false)
+        var view: View = LayoutInflater.from(activity).inflate(R.layout.discover_card_item, parent, false)
         return MyViewHolder(view)
     }
 

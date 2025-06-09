@@ -46,6 +46,8 @@
                     android:text="@string/hello_fullname"
                     android:textColor="@color/black"
                     android:gravity="center"
+                    android:visibility="gone"
+
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_width="match_parent"
@@ -70,6 +72,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
+                     android:visibility="gone"
+
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="15dp"
                     android:layout_width="match_parent"
@@ -93,7 +97,7 @@
                         android:layout_marginTop="23dp"
                         android:layout_marginRight="10dp"
                         android:background="@drawable/background_levels"
-                        android:backgroundTint="#FFE0B2">
+                        android:backgroundTint="#99A1FF43">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -122,6 +126,8 @@
                     android:layout_height="125dp"
                     android:layout_below="@id/mainActivity_easyLevel_relativelayoutId"
                     android:layout_marginLeft="5dp"
+                    android:visibility="gone"
+
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="5dp">
 
@@ -133,7 +139,7 @@
                         android:layout_marginTop="23dp"
                         android:layout_marginRight="10dp"
                         android:background="@drawable/background_levels"
-                        android:backgroundTint="#FFAB91">
+                        android:backgroundTint="#EDA1FF43">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -160,6 +166,8 @@
                     android:layout_below="@id/mainActivity_mediumLevel_relativelayoutId"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="5dp"
+                    android:visibility="gone"
+
                     android:layout_marginRight="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="125dp">
@@ -172,7 +180,7 @@
                         android:layout_marginTop="23dp"
                         android:layout_marginRight="10dp"
                         android:background="@drawable/background_levels"
-                        android:backgroundTint="#FF7043">
+                        android:backgroundTint="#91F42C">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -187,20 +195,12 @@
 
                     <ImageView
                         android:layout_width="90dp"
-                        android:layout_marginRight="10dp"
                         android:layout_height="90dp"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/hard_level" />
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/hardkid" />
 
                 </RelativeLayout>
-                <Button
-                    android:id="@+id/openARButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Open AR Puzzle"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"/>
 
             </LinearLayout>
 

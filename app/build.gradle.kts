@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    //implementation ("com.google.ar:core:1.42.0") // En son sürüm olabilir
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -59,9 +60,8 @@ dependencies {
 
 
 
-
     // Camera X
-    implementation("androidx.camera:camera-core:1.4.0")
+
     implementation("androidx.camera:camera-camera2:1.4.0")
     implementation("androidx.camera:camera-lifecycle:1.4.0")
     implementation("androidx.camera:camera-video:1.4.0")
@@ -70,12 +70,16 @@ dependencies {
     implementation("androidx.concurrent:concurrent-futures:1.2.0")
     implementation("com.google.guava:guava:32.1.3-jre")
 
+    // AR - Sceneform UX for AR functionality
+    implementation("com.gorisse.thomas.sceneform:sceneform:1.23.0")
     // Konfetti Lib for Animation
     implementation("nl.dionsegijn:konfetti-xml:2.0.4")
+    //implementation("io.github.sceneview:arsceneview:2.3.0")
+   // implementation("io.github.sceneview:sceneview:2.3.0")
 
     // AR
     //implementation("io.github.sceneview:arsceneview:2.2.1")
-    implementation("io.github.sceneview:arsceneview:0.9.8")
+    //implementation("io.github.sceneview:arsceneview:0.9.8")
     //implementation ("io.github.sceneview:arsceneview:1.0.5")
     //implementation ("io.github.sceneview:node:1.0.5")
 }
