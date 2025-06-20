@@ -61,7 +61,16 @@
 ## 📦 Kurulum ve Çalıştırma (Adım Adım)
 
 > Bu adımlar, uygulamayı cihazınıza kurmanız ve çalıştırmanız içindir.
+### Gereksinimler
+- Android Studio Arctic Fox veya üzeri
+- Android SDK 30+
+- Kotlin 1.5+
+- Gradle 7.0+
+- Android 8.0 (API 26) ve üzeri bir cihaz
+- ARCore destekli Android cihaz
 
+
+  
 ### 1. Projeyi Klonlayın
 
 ```bash
@@ -69,14 +78,24 @@ git clone https://github.com/kullaniciadi/arithmatika.git
 cd arithmatika 
 ```
 
-### 2. Android Studio ile Açıp Çalıştırabilirsiniz
+### 2. Android Studio ile Open Project yapın
 Android Studio > Open Project > arithmatika
+### 3. build.gradle dosyalarını senkronize edin
+### 4. Firebase Android projesi oluşturun 
+### 5. Firebase'ten google-services.json indirip, "app" klasörine ekleyin (package_name projenin domaini olmalı)
+### 5. Uygulamayı fiziksel bir Android cihaza yükleyin ve çalıştırın
+
+### Bağımlılıklar
+- com.google.ar.sceneform:filament-android
+
+- com.google.firebase:firebase-auth
+
+- com.google.firebase:firebase-database
 ---
 ## 📦 APK Dosyası (Proje Release'lerden indirilebilir)
 📥 [arithmatika.apk](https://github.com/Mujahid0Abdullah/ARGame/releases/tag/v1.0-beta) 
 
 Uygulama Android 8.0+ destekli cihazlarda test edilmiştir.
-
 
 ---
 
@@ -89,7 +108,19 @@ Uygulama Android 8.0+ destekli cihazlarda test edilmiştir.
 
 
 ---
+## ✨ Kullanım Talimatları
+1. Kullanıcı Kayıt/Giriş: Kullanıcı kendine ait bir hesap oluşturur.
 
+2. Oyun Seçimi: Kullanıcı istediği oyun modunu seçer (Match, Discover, Zombie, Matematik).
+
+3. AR Ortamı: Kamera açılır, telefon daire şeklinde hareket ettirerek zemini tespit edilir .
+
+4. Etkileşim: Kullanıcı AR modelleriyle dokunarak veya harekete tepki vererek etkileşime girer.
+
+5. Puanlama: Her doğru işlem puan kazandırır, zombiler vuruldukça skor artar.
+
+
+---
 ## 📱 Temel Özellikler
 
 - 🌍 **3D Dünya Haritası Üzerinde Etkileşimli Uçuş Rotası**
@@ -139,10 +170,19 @@ AR nesneleriyle şekil eşleştirme, hafıza ve desen tanıma gibi aktiviteler i
 | Sürüm Kontrol      | Git + GitHub                            |
 | Proje Yönetimi     | DevOps + trello(Jira)                   |
 
+## 🔮 AR Özellikleri
+- AR Teknolojisi: Sceneform AR (GLB model desteğiyle)
+- Donanım Gereksinimi: ARCore destekli Android cihaz (kamera, ivmeölçer)
+- Kullanım Alanları:
+1. 3D Model Yerleştirme
+2. Modelle Etkileşim (Tap Listener)
+3. Kamera takip ve obje hareketi (Zombie modu)
+
 ---
 
 ## 🗂️ Proje Yapısı
-app/src/main/java/com/achelmas/ARitmatikA/
+```
+app/src/main/java/com/achelmas/ARitmatikA/ 
 ├── Activities/
 │   ├── LoginActivity.kt, SignupActivity.kt, GameActivity.kt
 │   ├── MatchGameActivity.kt, DiscoverGameActivity.kt, ZombieActivity.kt
@@ -154,7 +194,7 @@ app/src/main/java/com/achelmas/ARitmatikA/
 │   └── LanguageManager.kt
 └── Level MVCs/
     ├── easyLevelMVC/, mediumLevelMVC/, hardLevelMVC/
-
+```
 ---
 
 ## 👨‍👩‍👧‍👦 Hedef Kullanıcılar
