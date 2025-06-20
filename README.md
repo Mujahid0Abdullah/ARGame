@@ -83,7 +83,7 @@ Uygulama Android 8.0+ destekli cihazlarda test edilmiştir.
 ## 📷 Uygulama Videosu
 
 
-🎥 [Oyunun Deneme Videosu İzle](https://drive.google.com/drive/folders/1NMVtW9hNAzjKB4gYqQLH6m0gxQtr0Yrj?usp=sharing) 
+🎥 [Oyunun Deneme Videosu İzle](https://youtu.be/DVnV9G9dwew) 
 
 
 
