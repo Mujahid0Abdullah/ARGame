@@ -1,7 +1,6 @@
 package com.achelmas.numart
 
 import android.util.Log
-
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.AnimatorSet
@@ -19,9 +18,6 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-//import io.github.sceneview.ar.ArSceneView
-//import io.github.sceneview.ar.node.ArModelNode
-//import io.github.sceneview.math.Position
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import nl.dionsegijn.konfetti.xml.KonfettiView
@@ -35,12 +31,18 @@ import android.speech.tts.TextToSpeech
 import android.widget.ImageButton
 import java.util.Locale
 
-
+/**
+ * DiscoverGameActivity handles the AR-based discover game logic,
+ * including 3D number rendering, user interaction, feedback, and progress tracking.
+ */
 class DiscoverGameActivity : AppCompatActivity() {
 
+    // Audio and feedback
     private lateinit var tts: TextToSpeech
     private lateinit var correctSound: MediaPlayer
     private lateinit var wrongSound: MediaPlayer
+
+    // UI elements
     private lateinit var refreshButton: CardView
     private lateinit var expressionView: TextView
     private lateinit var targetView: TextView
@@ -48,28 +50,25 @@ class DiscoverGameActivity : AppCompatActivity() {
     private lateinit var refreshBtnLinearLayout: LinearLayout
     private lateinit var nextButton: CardView
     private lateinit var refreshButtonWithText: CardView
+    private lateinit var muteButton: ImageButton
+    private lateinit var konfettiView: KonfettiView
 
+    // Game state variables
     private var currentResult: String? = null
-    private var currentResultNo: Int =100
-
+    private var currentResultNo: Int = 100
     private var currentOperation: String? = null
-    private var target:  String? = null
-    private var question:  String? = null
-
+    private var target: String? = null
+    private var question: String? = null
     private var targetNumber: Int = 0
     private var numbers = mutableListOf<String?>()
     private var usedNumbers = mutableSetOf<String?>()
     private val history = StringBuilder()
     private lateinit var arFragment: ArFragment
-    private lateinit var muteButton: ImageButton
     private var isTtsReady = false
     private var isMuted = false
-    // private lateinit var sceneView: ArSceneView
-    private lateinit var konfettiView: KonfettiView
-
-    // Numbers
     private var isGameOver = false
 
+    // 3D model names for numbers
     private var shape1: String? = null
     private var shape2: String? = null
     private var shape3: String? = null
@@ -78,13 +77,11 @@ class DiscoverGameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Set language
+        // Set language based on user preference
         LanguageManager.loadLocale(this)
-
         setContentView(R.layout.activity_match_game)
 
-        // Button and TextView initializations
-
+        // Initialize UI components
         refreshButton = findViewById(R.id.gameActivity_refreshButton)
         expressionView = findViewById(R.id.gameActivity_expressionView)
         targetView = findViewById(R.id.gameActivity_targetView)
@@ -95,8 +92,9 @@ class DiscoverGameActivity : AppCompatActivity() {
         refreshButtonWithText = findViewById(R.id.gameActivity_refreshButton_withText)
         muteButton = findViewById(R.id.muteButton)
 
-        var bundle: Bundle = intent.extras!!
-        if(bundle != null) {
+        // Retrieve game data from intent extras
+        val bundle: Bundle = intent.extras!!
+        if (bundle != null) {
             question = bundle.getString("Question").toString()
             target = bundle.getString("Target").toString()
             targetNumber = bundle.getString("Target Number")!!.toInt()
@@ -106,18 +104,17 @@ class DiscoverGameActivity : AppCompatActivity() {
             shape4 = bundle.getString("Shape4").toString()
         }
 
+        // Initialize TextToSpeech for question reading
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 val languageCode = LanguageManager.loadSelectedLanguage(this)
-
                 val locale = when (languageCode) {
                     "tr" -> Locale("tr", "TR")
                     "en" -> Locale.US
                     else -> Locale.US
                 }
                 val result = tts.setLanguage(locale)
-                Log.d("TAG", result.toString()+"lang in stsate "+languageCode)
-
+                Log.d("TAG", result.toString() + "lang in state " + languageCode)
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                     Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
                 } else {
@@ -126,15 +123,12 @@ class DiscoverGameActivity : AppCompatActivity() {
             }
         }
 
-
-        //sceneView = findViewById(R.id.arSceneViewId)
         arFragment = supportFragmentManager.findFragmentById(R.id.arSceneViewId) as ArFragment
 
         initializeGame()
         initializeAudio()
 
-        // Operation buttons
-
+        // Button listeners for refresh, question repeat, and mute
         refreshButton.setOnClickListener {
             finish()
             startActivity(intent)
@@ -142,67 +136,60 @@ class DiscoverGameActivity : AppCompatActivity() {
         expressionView.setOnClickListener {
             question?.let { speak(it) }
         }
-
         muteButton.setOnClickListener { toggleMute() }
-
-
     }
+
+    /** Speaks the given text using TTS. */
     private fun speak(text: String) {
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
-        Log.d("TAG", "giiili "+text)
-
+        Log.d("TAG", "speak: $text")
     }
 
-
-    // ----------------------------------------------------------------------------------------------
-
+    /**
+     * Adds a 3D number button to the AR scene.
+     * @param modelUri Path to the 3D model file.
+     * @param position Position in AR space.
+     * @param number Number identifier.
+     * @param onClick Callback for tap events.
+     */
     private fun add3DNumberButton(
-        modelUri: String, // 3D model URI (e.g., "models/number24.sfb")
-        position: Vector3, // // Model's position
-        number: Int, // Number it represents
-        onClick: (String,Int) -> Unit // Tıklanınca yapılacak işlem
+        modelUri: String,
+        position: Vector3,
+        number: Int,
+        onClick: (String, Int) -> Unit
     ) {
         ModelRenderable.builder()
-            .setSource(this, Uri.parse(modelUri)) // GLB file in assets
+            .setSource(this, Uri.parse(modelUri))
             .setIsFilamentGltf(true)
             .build()
             .thenAccept { renderable ->
                 val node = Node().apply {
                     this.renderable = renderable
-                    this.worldPosition = position // Position of the model in AR space
-                    // Adjust the scale of the 3D model
+                    this.worldPosition = position
                     this.worldScale = Vector3(3.0f, 3.0f, 3.0f)
                 }
-
                 arFragment.arSceneView.scene.addChild(node)
                 val fileName = modelUri.substringAfterLast("/").substringBefore(".")
-
-                // Set a tap listener to handle user interaction with the 3D model
-                node.setOnTapListener { _, _ -> onClick(fileName,number) }
-
+                node.setOnTapListener { _, _ -> onClick(fileName, number) }
             }
             .exceptionally { throwable ->
-                // Handle any errors that occur when loading the model
                 throwable.printStackTrace()
                 null
             }
     }
 
-
+    /** Adds all number buttons to the AR scene at predefined positions. */
     private fun addNumberButtons() {
-        // Modellerin farklı pozisyonlara yerleştirilmesi (x, y, z ekseninde farklılık)
         val positions = listOf(
-            Vector3(0.2f, -0.5f, -0.5f), // Left
-                    Vector3(0.2f, -0.5f, -1.0f), // Right
-        Vector3(-0.5f, -0.5f, -1.0f), // Front left
-        Vector3(-0.3f, -0.5f, -0.7f), // Front right
-        Vector3(-0.1f, -0.5f, -1.0f), // Far left
-        Vector3(0.5f, -0.5f, -0.5f) // Center
-
-
+            Vector3(0.2f, -0.5f, -0.5f),
+            Vector3(0.2f, -0.5f, -1.0f),
+            Vector3(-0.5f, -0.5f, -1.0f),
+            Vector3(-0.3f, -0.5f, -0.7f),
+            Vector3(-0.1f, -0.5f, -1.0f),
+            Vector3(0.5f, -0.5f, -0.5f)
         )
         val gameNumbers = listOf(shape1, shape2, shape3, shape4)
-        var x=-0.5f;
+        var x = -0.5f
         for (i in gameNumbers.indices) {
             val shape = gameNumbers[i]
             val modelPath = "models/$shape.glb"
@@ -212,110 +199,85 @@ class DiscoverGameActivity : AppCompatActivity() {
                 modelUri = modelPath,
                 position = position,
                 number = i
-            ) { selectedNumber,noid ->
-                onNumberSelected(selectedNumber,noid)
+            ) { selectedNumber, noid ->
+                onNumberSelected(selectedNumber, noid)
             }
         }
-
-
     }
 
-
-    //GAME START---------------------------------------------------------------
+    /** Initializes the game state and UI for a new round. */
     private fun initializeGame() {
-
         addNumberButtons()
-
-
-        // Predefined numbers
         numbers.clear()
         usedNumbers.clear()
         numbers.addAll(listOf(shape1, shape2, shape3, shape4))
-
         targetView.text = "$target"
         targetView.setTextColor(Color.BLACK)
         targetView.visibility = View.GONE
-
-
-        // Reset game state
         currentResult = null
         currentResultNo = 100
-
         currentOperation = null
         history.clear()
         expressionView.text = question
         question?.let { speak(it) }
-
-
-        resetScoreView() // Animasyonu geri döndür
-
-
+        resetScoreView()
     }
 
-
-
+    /** Resets the score view's position and scale with animation. */
     private fun resetScoreView() {
         val scoreView = findViewById<RelativeLayout>(R.id.gameActivity_scoreView)
-
-        // Eski pozisyona geri dön (y ekseni hareketi)
         val moveDown = ObjectAnimator.ofFloat(scoreView, "translationY", scoreView.translationY, 0f)
-        moveDown.duration = 500 // 0.5 saniyede geri dön
-
-        // Ölçeklendirme sıfırlama
+        moveDown.duration = 500
         val scaleX = ObjectAnimator.ofFloat(scoreView, "scaleX", scoreView.scaleX, 1f)
         val scaleY = ObjectAnimator.ofFloat(scoreView, "scaleY", scoreView.scaleY, 1f)
         scaleX.duration = 500
         scaleY.duration = 500
-
-        // Animasyonları birleştir ve çalıştır
         val animatorSet = AnimatorSet()
         animatorSet.playTogether(moveDown, scaleX, scaleY)
         animatorSet.start()
     }
 
-    // Number and operation selection===================================
+    /**
+     * Handles logic when a number is selected in the AR scene.
+     * Updates state, checks for correct/incorrect match, and triggers feedback.
+     */
     private fun onNumberSelected(number: String, noid: Int) {
-        if (isGameOver) return // Ignore taps after game over
-
-        if (number == target ) {
+        if (isGameOver) return
+        if (number == target) {
             Log.d("TAG", "true")
             playCorrectFeedback()
-
-            Toast.makeText(this, "you selected ${number}", Toast.LENGTH_SHORT).show()
-//            expressionView.text = number
+            Toast.makeText(this, "you selected $number", Toast.LENGTH_SHORT).show()
             usedNumbers.add(number)
-            onGameOver(true) // Target reached
-
+            onGameOver(true)
             return
-        }
-
-        else  {
-            Log.d("TAG", "false "+number+" "+target)
+        } else {
+            Log.d("TAG", "false $number $target")
             playWrongFeedback()
-
-            onGameOver(false) // Target reached
+            onGameOver(false)
         }
-
     }
 
+    /** Initializes audio feedback. */
     private fun initializeAudio() {
         correctSound = MediaPlayer.create(this, R.raw.correct_sound)
         wrongSound = MediaPlayer.create(this, R.raw.wrong_sound)
     }
 
-
+    /** Plays correct answer feedback (sound). */
     private fun playCorrectFeedback() {
         if (!isMuted) {
             correctSound.start()
         }
     }
 
+    /** Plays wrong answer feedback (sound). */
     private fun playWrongFeedback() {
         if (!isMuted) {
             wrongSound.start()
         }
     }
 
+    /** Plays a tap sound effect for UI feedback. */
     private fun playTapSound() {
         if (!isMuted) {
             MediaPlayer.create(this, R.raw.tap_sound).apply {
@@ -325,6 +287,7 @@ class DiscoverGameActivity : AppCompatActivity() {
         }
     }
 
+    /** Toggles mute state and updates the mute button icon. */
     private fun toggleMute() {
         isMuted = !isMuted
         muteButton.setImageResource(
@@ -334,59 +297,37 @@ class DiscoverGameActivity : AppCompatActivity() {
         if (!isMuted) playTapSound()
     }
 
-    //GAME OVER -----------------------------------------------
+    /**
+     * Handles game over state, shows feedback, and unlocks next target if successful.
+     * @param isSuccess True if the player matched correctly.
+     */
     private fun onGameOver(isSuccess: Boolean) {
-        // Visibility of buttons
         isGameOver = true
-
         refreshButton.visibility = View.GONE
-
         if (isSuccess) {
             nextBtnLinearLayout.visibility = View.VISIBLE
-
-            targetView.setTextColor(ContextCompat.getColor(this , R.color.primaryColor))
-            //            targetView.text = "TEBRİKLER! Hedefe ulaştınız! 🎉"
+            targetView.setTextColor(ContextCompat.getColor(this, R.color.primaryColor))
             Toast.makeText(this, resources.getString(R.string.target_reached), Toast.LENGTH_LONG).show()
-
-
-            // Skor animasyonu başlat
-            animateScoreView {
-                // Konfetti animasyonu başlat
-                startKonfetti()
-            }
+            animateScoreView { startKonfetti() }
             unlockNextTarget(FirebaseAuth.getInstance().currentUser!!.uid, targetNumber)
             nextButton.setOnClickListener {
                 val intent = Intent(this, DiscoverLvlActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-
                 finish()
                 startActivity(intent)
             }
-
-            // Unlock next target when current target is reached
-
-        }
-        else {
+        } else {
             targetView.setTextColor(Color.RED)
-            //            targetView.text = "Hedefe ulaşılamadı! 😞"
             Toast.makeText(this, resources.getString(R.string.target_not_reached), Toast.LENGTH_SHORT).show()
-
             val scoreView = findViewById<RelativeLayout>(R.id.gameActivity_scoreView)
-
-            // Ekranın merkezine taşımak için Y ekseni animasyonu
             val screenHeight = resources.displayMetrics.heightPixels
-            val targetY = screenHeight / 2 - (scoreView.height / 2) // Ortaya yerleşim
-
+            val targetY = screenHeight / 2 - (scoreView.height / 2)
             val moveUp = ObjectAnimator.ofFloat(scoreView, "translationY", scoreView.translationY, -targetY.toFloat())
-            moveUp.duration = 1000 // Hareket 1 saniye sürecek
-
-            // Büyüme (ölçek) animasyonu
+            moveUp.duration = 1000
             val scaleX = ObjectAnimator.ofFloat(scoreView, "scaleX", 1f, 2f)
             val scaleY = ObjectAnimator.ofFloat(scoreView, "scaleY", 1f, 2f)
             scaleX.duration = 1000
             scaleY.duration = 1000
-
-            // Animasyonlar tamamlanınca bir işlem başlatmak için Listener
             val animatorSet = AnimatorSet()
             animatorSet.playTogether(moveUp, scaleX, scaleY)
             animatorSet.addListener(object : Animator.AnimatorListener {
@@ -396,17 +337,19 @@ class DiscoverGameActivity : AppCompatActivity() {
                 override fun onAnimationRepeat(animation: Animator) {}
             })
             animatorSet.start()
-
             refreshBtnLinearLayout.visibility = View.VISIBLE
             refreshButtonWithText.setOnClickListener {
                 finish()
                 startActivity(intent)
             }
         }
-
-
     }
 
+    /**
+     * Unlocks the next target for the user in Firebase after a successful match.
+     * @param userId The user's Firebase UID.
+     * @param completedTarget The number of the completed target.
+     */
     private fun unlockNextTarget(userId: String, completedTarget: Int) {
         val nextTarget = completedTarget + 1
         val userProgressRef = FirebaseDatabase.getInstance().reference
@@ -414,12 +357,10 @@ class DiscoverGameActivity : AppCompatActivity() {
             .child(userId)
             .child("DiscoverEasyLevel")
         Log.d("TAG", userProgressRef.toString())
-        // Check if the next target is already unlocked
         userProgressRef.child(nextTarget.toString()).get().addOnSuccessListener { snapshot ->
             if (snapshot.exists() && snapshot.value == true) {
                 Toast.makeText(this, resources.getString(R.string.next_target_already_unlocked), Toast.LENGTH_SHORT).show()
             } else {
-                // Unlock the next target
                 userProgressRef.child(nextTarget.toString()).setValue(true)
                     .addOnSuccessListener {
                         Toast.makeText(this, resources.getString(R.string.next_target_unlocked), Toast.LENGTH_SHORT).show()
@@ -431,46 +372,37 @@ class DiscoverGameActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * Animates the score view to the center and scales it up, then triggers a callback.
+     * @param onAnimationEnd Callback to run after animation completes.
+     */
     private fun animateScoreView(onAnimationEnd: () -> Unit) {
         val scoreView = findViewById<RelativeLayout>(R.id.gameActivity_scoreView)
-
-        // Ekranın merkezine taşımak için Y ekseni animasyonu
         val screenHeight = resources.displayMetrics.heightPixels
-        val targetY = screenHeight / 2 - (scoreView.height / 2) // Ortaya yerleşim
-
+        val targetY = screenHeight / 2 - (scoreView.height / 2)
         val moveUp = ObjectAnimator.ofFloat(scoreView, "translationY", scoreView.translationY, -targetY.toFloat())
-        moveUp.duration = 1000 // Hareket 1 saniye sürecek
-
-        // Büyüme (ölçek) animasyonu
+        moveUp.duration = 1000
         val scaleX = ObjectAnimator.ofFloat(scoreView, "scaleX", 1f, 2f)
         val scaleY = ObjectAnimator.ofFloat(scoreView, "scaleY", 1f, 2f)
         scaleX.duration = 1000
         scaleY.duration = 1000
-
-        // Animasyonlar tamamlanınca bir işlem başlatmak için Listener
         val animatorSet = AnimatorSet()
         animatorSet.playTogether(moveUp, scaleX, scaleY)
         animatorSet.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {}
-            override fun onAnimationEnd(animation: Animator) {
-                onAnimationEnd() // Animasyon tamamlandığında konfetti başlat
-            }
-
+            override fun onAnimationEnd(animation: Animator) { onAnimationEnd() }
             override fun onAnimationCancel(animation: Animator) {}
             override fun onAnimationRepeat(animation: Animator) {}
         })
         animatorSet.start()
     }
 
+    /** Starts the konfetti animation for celebration. */
     private fun startKonfetti() {
         konfettiView.visibility = View.VISIBLE
-
-        // Repeat the animation 3 times
         val repeatCount = 3
-        val intervalMillis = 1000L // Delay between animations in milliseconds
+        val intervalMillis = 1000L
         var currentRepeat = 0
-
         val handler = android.os.Handler(mainLooper)
         val animationRunnable = object : Runnable {
             override fun run() {
@@ -491,26 +423,19 @@ class DiscoverGameActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // Start the first animation
         handler.post(animationRunnable)
     }
 
+    /** Releases resources on activity destroy. */
     override fun onDestroy() {
         super.onDestroy()
         try { correctSound.release() } catch (_: Exception) {}
         try { wrongSound.release() } catch (_: Exception) {}
-        // Shutdown TTS if initialized
         try { tts.shutdown() } catch (_: Exception) {}
-        // Remove any handlers if used
-
-        // Example for MediaPlayer
-
     }
+
     override fun onBackPressed() {
-        super.onBackPressed() // or use
+        super.onBackPressed()
         finish()
     }
-
-
 }
